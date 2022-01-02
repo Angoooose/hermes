@@ -1,6 +1,7 @@
 import '../styles/App.css';
 import { useState } from 'react';
 
+import Header from './Header';
 import Login from './Login';
 
 export default function App() {
@@ -8,6 +9,7 @@ export default function App() {
 
     return (
         <div>
+            <Header/>
             <Login setUsername={setUserName}/>
         </div>
     );
