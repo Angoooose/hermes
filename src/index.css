@@ -2,13 +2,55 @@
 
 :root {
     --bg-primary: #212540;
-    --bg-secondary: #1a1d2e;
+    --bg-secondary: #171a29;
+    --primary-blue: #1d9bf5;
+    --primary-green: #36e06c;
+    --border-radius: 5px;
     --text: #fff;
+    --font: 'Merriweather Sans', sans-serif;
 }
 
 body {
     background-color: var(--bg-primary);
     color: var(--text);
-    font-family: 'Merriweather Sans', sans-serif;
+    font-family: var(--font);
     height: 100%;
+}
+
+input {
+    background-color: var(--bg-secondary);
+    border: none;
+    border-bottom: 2px solid var(--bg-secondary);
+    border-radius: var(--border-radius);
+    color: var(--text);
+    font-family: var(--font);
+    outline: none;
+    padding: 10px 10px 8px 10px;
+    transition: 0.5s;
+}
+
+input:focus, input:hover {
+    border-bottom: 2px solid var(--primary-blue);
+}
+
+button {
+    background-color: var(--primary-blue);
+    border: none;
+    border-radius: var(--border-radius);
+    color: var(--text);
+    cursor: pointer;
+    margin: 0px 10px;
+    outline: none;
+    padding: 10px 15px;
+    user-select: none;
+    transition: 0.5s;
+}
+
+button:hover {
+    opacity: 0.8;
+}
+
+button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
 }
