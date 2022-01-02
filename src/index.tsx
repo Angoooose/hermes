@@ -3,10 +3,12 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './components/App';
 
-import { initializeApp } from 'firebase/app'; 
+import { initializeApp } from 'firebase/app';
+import { getFirestore } from 'firebase/firestore';
 import firebaseConfig from './firebase.config';
 
-let app = initializeApp(firebaseConfig);
+initializeApp(firebaseConfig);
+export const database = getFirestore();
 
 ReactDOM.render(
   <React.StrictMode>
