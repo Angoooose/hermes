@@ -15,7 +15,6 @@ header {
     display: flex;
     flex-direction: row;
     align-items: center;
-    cursor: default;
     margin-right: auto;
     font-weight: 700;
     font-size: 25px;

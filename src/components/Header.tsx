@@ -6,10 +6,10 @@ import githubImage from '../assets/GitHub-Mark-Light-120px-plus.png';
 export default function Header() {
     return (
         <header>
-            <div className="header-title">
+            <a className="header-title" href="/">
                 <img className="header-img" src={headerImage} alt="Chat Bubble"/>
                 hermes
-            </div>
+            </a>
             <a href="https://github.com/Angoooose/hermes" target="_blank" rel="noreferrer" className="header-link">
                 <img className="header-img github-img" src={githubImage} alt="Github"/>
             </a>
