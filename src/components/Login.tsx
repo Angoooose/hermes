@@ -17,6 +17,7 @@ export default function Login(props: LoginProps) {
         if (nameRef.current!.value !== '') {
             let name = nameRef.current!.value;
             setUsername(name);
+            localStorage.setItem('name', name);
             let nameQuery = await getDoc(doc(database, 'users', name));
             if (nameQuery.data() === undefined) {
                 setDoc(doc(database, 'users', name), {
