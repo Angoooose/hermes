@@ -3,18 +3,24 @@
 :root {
     --bg-primary: #212540;
     --bg-secondary: #171a29;
+    --bg-tertiary: #282d42;
     --primary-blue: #1d9bf5;
     --primary-green: #36e06c;
     --border-radius: 5px;
     --text: #fff;
+    --text-gray: gray;
     --font: 'Merriweather Sans', sans-serif;
+    --box-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
+}
+
+html, body, #root {
+    height: 100%;
 }
 
 body {
     background-color: var(--bg-primary);
     color: var(--text);
     font-family: var(--font);
-    height: 100%;
 }
 
 input {
@@ -44,6 +50,7 @@ button {
     padding: 10px 15px;
     user-select: none;
     transition: 0.5s;
+    white-space: nowrap;
 }
 
 button:hover {
@@ -53,4 +60,24 @@ button:hover {
 button:disabled {
     opacity: 0.5;
     cursor: not-allowed;
+}
+
+form {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+a {
+    color: var(--text);
+    text-decoration: none;
+}
+
+.full-width {
+    width: 100%;
+}
+
+.gray {
+    color: var(--text-gray);
 }
