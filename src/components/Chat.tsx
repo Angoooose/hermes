@@ -36,6 +36,10 @@ export default function Chat(props: ChatProps) {
         lastMessageRef.current?.scrollIntoView({ behavior: 'smooth' });
     }, [messages]);
 
+    window.addEventListener('keydown', () => {
+        chatRef.current?.focus();
+    });
+
     function sendMessage(e: FormEvent) {
         e.preventDefault();
 
@@ -98,7 +102,7 @@ export default function Chat(props: ChatProps) {
                     <div className="chat-header-big"><span className="gray">@</span> {username}</div>
                 </div>
             </div>
-            <div className="messages-container" onClick={() => chatRef.current?.focus()}>
+            <div className="messages-container">
                 <RenderMessages/>
                 <div ref={lastMessageRef}/>
             </div>
