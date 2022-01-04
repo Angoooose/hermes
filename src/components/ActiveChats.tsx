@@ -4,6 +4,7 @@ import { useEffect, useState, useRef, FormEvent } from 'react';
 
 import { getDoc, doc, collection, addDoc, updateDoc } from 'firebase/firestore';
 import { database } from '../index';
+import getMessageTimestamp from '../utils/getMessageTimestamp';
 
 import ActiveChatsProps from '../Types/ActiveChatsProps';
 import ChatData from '../Types/ChatData';
@@ -12,7 +13,7 @@ export default function ActiveChats(props: ActiveChatsProps) {
     const [isButtonDisabled, setIsButtonDisabled] = useState<boolean>(true);
     const [activeChats, setActiveChats] = useState<ChatData[]>([]);
     const newChatRef = useRef<HTMLInputElement>(null);
-    const { username } = props;
+    const { username, setUsername } = props;
 
     useEffect(() => {
         getDoc(doc(database, 'users', username)).then(d => d.data()).then(async userDoc => {
@@ -42,8 +43,11 @@ export default function ActiveChats(props: ActiveChatsProps) {
                             <a className="active-chat-card" href={`/chat/${chat.id}`}>
                                 <div className="active-chat-name"><span className="gray">@</span> {chat.name}</div>
                                 <div className="active-chat-right">
-                                    <div className="active-chat-timestamp">{new Date(chat.lastMessage.timestamp).toDateString()}</div>
-                                    <div className={`active-chat-last-msg ${chat.lastMessage.author === username ? 'active-chat-last-msg-sent' : ''}`}>{chat.lastMessage.content}</div>
+                                    {chat.lastMessage ?
+                                        <div>
+                                            <div className="active-chat-timestamp">{getMessageTimestamp(new Date(chat.lastMessage.timestamp))}</div>
+                                            <div className={`active-chat-last-msg ${chat.lastMessage.author === username ? 'active-chat-last-msg-sent' : ''}`}>{chat.lastMessage.content}</div>
+                                        </div> : <div className="gray">No messages sent</div>}
                                 </div>
                             </a>
                         );
@@ -66,33 +70,30 @@ export default function ActiveChats(props: ActiveChatsProps) {
                     users: [username, newUserName],
                 });
 
-                getDoc(doc(database, 'users', username)).then(d => d.data()).then(userDoc => {
+                await getDoc(doc(database, 'users', username)).then(d => d.data()).then(async userDoc => {
                     let newChats = [...userDoc?.chats];
                     newChats.push({
                         id: newChat.id,
                         name: newUserName,
                     });
 
-                    updateDoc(doc(database, 'users', username), {
+                    await updateDoc(doc(database, 'users', username), {
                         chats: newChats,
                     });
                 });
 
-                getDoc(doc(database, 'users', newUserName)).then(d => d.data()).then(userDoc => {
+                await getDoc(doc(database, 'users', newUserName)).then(d => d.data()).then(async userDoc => {
                     let newChats = [...userDoc?.chats];
                     newChats.push({
                         id: newChat.id,
                         name: username,
                     });
 
-                    updateDoc(doc(database, 'users', newUserName), {
+                    await updateDoc(doc(database, 'users', newUserName), {
                         chats: newChats,
                     });
-
-                    window.location.replace(`/chat/${newChat.id}`);
                 });
 
-                
                 window.location.replace(`/chat/${newChat.id}`);
             } else {
                 window.location.replace(`/chat/${activeChats.find(c => c.name === newUserName)?.id}`);
@@ -100,14 +101,28 @@ export default function ActiveChats(props: ActiveChatsProps) {
         }
     }
 
+    function logout() {
+        localStorage.removeItem('name');
+        setUsername('');
+    }
+
     return (
         <div className="active-chats-container">
             <h1>Your active chats</h1>
-            <LoadChats/>
-            <form onSubmit={(e) => createNewChat(e)}>
-                <input placeholder="Name (eg. John Doe)" className="full-width" ref={newChatRef} onChange={(el) => setIsButtonDisabled(el.target.value === '')}/>
-                <button disabled={isButtonDisabled}>Start Chatting</button>
-            </form>
+            <div className="active-chat-cards-container">
+                <div className="active-chats-account-info">
+                    <div>
+                        <div className="gray">Signed in as:</div>
+                        <div className="active-chats-account-info-big"><span className="gray">@</span> {username}</div>
+                    </div>
+                    <button className="logout-button" onClick={() => logout()}>Logout</button>
+                </div>
+                <LoadChats/>
+                <form onSubmit={(e) => createNewChat(e)}>
+                    <input placeholder="Name (eg. John Doe)" className="full-width" ref={newChatRef} onChange={(el) => setIsButtonDisabled(el.target.value === '')}/>
+                    <button disabled={isButtonDisabled}>Start Chatting</button>
+                </form>
+            </div>
         </div>
     );
 }

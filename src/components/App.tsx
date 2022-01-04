@@ -20,7 +20,7 @@ export default function App() {
         <div className="app">
                 <Header/>
                 <Routes>
-                    <Route path="/" element={username ? <ActiveChats username={username}/> : <Login setUsername={setUsername}/>}/>
+                    <Route path="/" element={username ? <ActiveChats username={username} setUsername={setUsername}/> : <Login setUsername={setUsername}/>}/>
                     <Route path="/chat/:chatId" element={<Chat username={username}/>}/>
                 </Routes>
         </div>

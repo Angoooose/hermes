@@ -1,5 +1,5 @@
 .active-chats-container {
-    padding-top: 50px;
+    padding: 50px 20px 0 20px;
     max-width: 600px;
     margin: auto;
     text-align: center;
@@ -42,7 +42,7 @@
     font-weight: 300;
     float: right;
     margin-top: 5px;
-    padding: 3px 6px;
+    padding: 6px 10px;
     width: fit-content;
 }
 
@@ -53,4 +53,23 @@
 .active-chat-timestamp {
     color: var(--text-gray);
     font-size: 13px;
+}
+
+.active-chats-account-info {
+    align-items: center;
+    background-color: var(--bg-secondary);
+    border-radius: var(--border-radius);
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 15px;
+    text-align: left;
+}
+
+.active-chats-account-info-big {
+    font-size: 35px;
+}
+
+.logout-button {
+    background-color: var(--primary-red);
 }
