@@ -3,7 +3,10 @@
 }
 
 .messages-container {
-    padding: 20px 0px;
+    padding: 20px 10px;
+    height: calc(100vh - 320px);
+    margin: 10px 0;
+    overflow-y: scroll;
 }
 
 .message-container {
@@ -26,6 +29,7 @@
     padding: 6px 10px;
     width: fit-content;
     max-width: 500px;
+    margin: 5px 0;
 }
 
 .message-received {
@@ -43,4 +47,25 @@
     color: var(--text-gray);
     padding: 25px 0;
     text-align: center;
+}
+
+.chat-header {
+    margin-bottom: 10px;
+    background-color: var(--bg-secondary);
+    padding: 10px;
+    border-radius: var(--border-radius);
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.chat-header-big {
+    font-weight: 700;
+    font-size: 35px;
+}
+
+.chat-header-right {
+    text-align: right;
 }

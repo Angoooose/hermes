@@ -2,8 +2,9 @@ import '../styles/Chat.css';
 
 import { useState, useRef, useEffect, FormEvent } from 'react';
 import { useParams } from 'react-router-dom';
-import { doc, updateDoc, onSnapshot } from 'firebase/firestore';
+import { doc, updateDoc, onSnapshot, getDoc } from 'firebase/firestore';
 import { database } from '../index';
+import getMessageTimestamp from '../utils/getMessageTimestamp';
 
 import ChatProps from '../Types/ChatProps';
 import Message from '../Types/Message';
@@ -11,16 +12,29 @@ import Message from '../Types/Message';
 export default function Chat(props: ChatProps) {
     const [isSendDisabled, setIsSendDisabled] = useState<boolean>(true);
     const [messages, setMessages] = useState<Message[]>([]);
+    const [chatName, setChatName] = useState<string>('');
+    const lastMessageRef = useRef<HTMLDivElement>(null);
     const chatRef = useRef<HTMLInputElement>(null);
     const formRef = useRef<HTMLFormElement>(null);
     const { username } = props;
     const { chatId } = useParams();
     
     useEffect(() => {
-        onSnapshot(doc(database, 'chats', chatId as string), (doc) => {
+        const chatDoc = doc(database, 'chats', chatId as string);
+
+        onSnapshot(chatDoc, (doc) => {
             setMessages(doc.data()?.messages as Message[]);
         });
+
+        getDoc(chatDoc).then(d => d.data()).then(chatData => {
+            let chatUsers: string[] = chatData?.users;
+            setChatName(chatUsers.find(name => name !== localStorage.getItem('name')) as string);
+        });
     }, []);
+
+    useEffect(() => {
+        lastMessageRef.current?.scrollIntoView({ behavior: 'smooth' });
+    }, [messages]);
 
     function sendMessage(e: FormEvent) {
         e.preventDefault();
@@ -30,7 +44,7 @@ export default function Chat(props: ChatProps) {
             newMessages.push({
                 author: username,
                 content: chatRef.current!.value,
-                timestamp: new Date().toJSON(),
+                timestamp: new Date().getTime(),
             });
 
             setMessages(newMessages);
@@ -49,13 +63,16 @@ export default function Chat(props: ChatProps) {
         if (messages.length > 0) {
             return (
                 <div>
-                    {messages.map(msg => {
+                    {messages.map((msg, i) => {
                         let messageClassType = 'received';
                         if (msg.author === username) messageClassType = 'sent';
         
+                        let isMessageGroup = i === 0 || (msg.timestamp - messages[i - 1].timestamp <= 60000 * 5 && messages[i - 1].author === msg.author);
+                        if (i === 0) isMessageGroup = false;
+
                         return (
                             <div className={`message-container message-container-${messageClassType}`}>
-                                <div className="message-timestamp">{new Date(msg.timestamp).toDateString()}</div>
+                                {!isMessageGroup && <div className="message-timestamp">{getMessageTimestamp(new Date(msg.timestamp))}</div>}
                                 <div className={`message message-${messageClassType}`}>
                                     {msg.content}
                                 </div>
@@ -71,23 +88,22 @@ export default function Chat(props: ChatProps) {
     
     return (
         <div className="chat-container">
-            <div className="messages-container">
-                <RenderMessages/>
-                {/* <div className="message-container">
-                    <div className="message-timestamp">Today @ 1:21 PM</div>
-                    <div className="message message-received">
-                        hey, how are you?
-                    </div>
+            <div className="chat-header">
+                <div>
+                    <div className="gray">Chatting with:</div>
+                    <div className="chat-header-big"><span className="gray">@</span> {chatName}</div>
                 </div>
-                <div className="message-container message-container-sent">
-                    <div className="message-timestamp">Today @ 1:25 PM</div>
-                    <div className="message message-sent">
-                        i'm good, thanks
-                    </div>
-                </div> */}
+                <div className="chat-header-right">
+                    <div className="gray">Signed in as:</div>
+                    <div className="chat-header-big"><span className="gray">@</span> {username}</div>
+                </div>
+            </div>
+            <div className="messages-container" onClick={() => chatRef.current?.focus()}>
+                <RenderMessages/>
+                <div ref={lastMessageRef}/>
             </div>
             <form onSubmit={(e) => sendMessage(e)} ref={formRef}>
-                <input placeholder="Send a message to @user" className="full-width" ref={chatRef} onChange={(el) => setIsSendDisabled(el.target.value === '')}/>
+                <input placeholder={`Send a message to @${chatName}`} className="full-width" ref={chatRef} onChange={(el) => setIsSendDisabled(el.target.value === '')}/>
                 <button disabled={isSendDisabled}>Send</button>
             </form>
         </div>
