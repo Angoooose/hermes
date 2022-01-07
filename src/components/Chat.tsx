@@ -13,6 +13,7 @@ export default function Chat(props: ChatProps) {
     const [isSendDisabled, setIsSendDisabled] = useState<boolean>(true);
     const [messages, setMessages] = useState<Message[]>([]);
     const [chatName, setChatName] = useState<string>('');
+    const [isFailed, setIsFailed] = useState<boolean>(false);
     const lastMessageRef = useRef<HTMLDivElement>(null);
     const chatRef = useRef<HTMLInputElement>(null);
     const formRef = useRef<HTMLFormElement>(null);
@@ -22,13 +23,17 @@ export default function Chat(props: ChatProps) {
     useEffect(() => {
         const chatDoc = doc(database, 'chats', chatId as string);
 
-        onSnapshot(chatDoc, (doc) => {
-            setMessages(doc.data()?.messages as Message[]);
+        getDoc(chatDoc).then(d => d.data()).then(chatData => {
+            if (chatData) {
+                let chatUsers: string[] = chatData?.users;
+                setChatName(chatUsers.find(name => name !== localStorage.getItem('name')) as string);
+            } else {
+                setIsFailed(true);
+            }
         });
 
-        getDoc(chatDoc).then(d => d.data()).then(chatData => {
-            let chatUsers: string[] = chatData?.users;
-            setChatName(chatUsers.find(name => name !== localStorage.getItem('name')) as string);
+        onSnapshot(chatDoc, (doc) => {
+            setMessages(doc.data()?.messages as Message[]);
         });
     }, []);
 
@@ -90,6 +95,13 @@ export default function Chat(props: ChatProps) {
         }
     }
     
+    if (isFailed) return (
+       <div className="failed-container">
+           <div className="failed-header">404</div>
+           <div className="failed-description">We couldn't find that chat. Maybe if you were logged into a different account we could find it.</div>
+       </div> 
+    );
+
     return (
         <div className="chat-container">
             <div className="chat-header">
