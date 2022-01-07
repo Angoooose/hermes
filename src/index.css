@@ -6,7 +6,8 @@
     --bg-tertiary: #282d42;
     --primary-blue: #1d9bf5;
     --primary-green: #36e06c;
-    --primary-red: #f01355;
+    --primary-red: #f52043;
+    --secondary-red: rgba(245, 32, 67, 0.3);
     --border-radius: 5px;
     --text: #fff;
     --text-gray: gray;

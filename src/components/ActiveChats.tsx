@@ -102,7 +102,8 @@ export default function ActiveChats(props: ActiveChatsProps) {
     }
 
     function logout() {
-        localStorage.removeItem('name');
+        localStorage.removeItem('username');
+        localStorage.removeItem('token');
         setUsername('');
     }
 
