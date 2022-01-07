@@ -7,7 +7,7 @@ export default function getMessageTimestamp(messageDate: Date) {
     } else if (messageDate.getDate() === currentDate.getDate() - 1) {
         messageDay = 'Yesterday';
     } else {
-        messageDay = `${messageDate.getMonth()}/${messageDate.getDate()}/${messageDate.getFullYear()}`;
+        messageDay = `${messageDate.getMonth() + 1}/${messageDate.getDate()}/${messageDate.getFullYear()}`;
     }
 
     let messageTime = formatAMPM(messageDate);
