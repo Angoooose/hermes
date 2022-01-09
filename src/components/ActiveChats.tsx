@@ -1,13 +1,18 @@
 import '../styles/ActiveChats.css';
 
-import { useEffect, useState, useRef, FormEvent } from 'react';
+import { useEffect, useState, useRef, FormEvent, Dispatch } from 'react';
 
 import { getDoc, doc, collection, addDoc, updateDoc } from 'firebase/firestore';
 import { database } from '../index';
 import getMessageTimestamp from '../utils/getMessageTimestamp';
 
-import ActiveChatsProps from '../Types/ActiveChatsProps';
 import ChatData from '../Types/ChatData';
+
+interface ActiveChatsProps {
+    username: string,
+    setUsername: Dispatch<string>,
+    clearUsername: () => void,
+}
 
 export default function ActiveChats(props: ActiveChatsProps) {
     const [isButtonDisabled, setIsButtonDisabled] = useState<boolean>(true);

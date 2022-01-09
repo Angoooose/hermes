@@ -6,8 +6,11 @@ import { doc, updateDoc, onSnapshot, getDoc } from 'firebase/firestore';
 import { database } from '../index';
 import getMessageTimestamp from '../utils/getMessageTimestamp';
 
-import ChatProps from '../Types/ChatProps';
 import Message from '../Types/Message';
+
+interface ChatProps {
+    username: string,
+}
 
 export default function Chat(props: ChatProps) {
     const [isSendDisabled, setIsSendDisabled] = useState<boolean>(true);

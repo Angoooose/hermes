@@ -1,10 +1,12 @@
 import '../styles/Login.css';
 
-import { useRef, FormEvent, useState } from 'react';
+import { useRef, FormEvent, useState, Dispatch } from 'react';
 import { setDoc, getDoc, doc, updateDoc } from 'firebase/firestore';
 import { database } from '../index';
 
-import LoginProps from '../Types/LoginProps';
+interface LoginProps {
+    setUsername: Dispatch<string>,
+}
 
 export default function Login(props: LoginProps) {
     const [isLoginDisabled, setIsLoginDisabled] = useState<boolean>(true);
