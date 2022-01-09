@@ -24,9 +24,9 @@ export default function Chat(props: ChatProps) {
         const chatDoc = doc(database, 'chats', chatId as string);
 
         getDoc(chatDoc).then(d => d.data()).then(chatData => {
-            if (chatData) {
+            if (chatData && username) {
                 let chatUsers: string[] = chatData?.users;
-                setChatName(chatUsers.find(name => name !== localStorage.getItem('name')) as string);
+                setChatName(chatUsers.find(name => name !== username) as string);
             } else {
                 setIsFailed(true);
             }

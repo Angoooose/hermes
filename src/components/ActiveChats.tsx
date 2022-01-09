@@ -14,7 +14,7 @@ export default function ActiveChats(props: ActiveChatsProps) {
     const [isNewChatError, setIsNewChatError] = useState<boolean>(false);
     const [activeChats, setActiveChats] = useState<ChatData[]>([]);
     const newChatRef = useRef<HTMLInputElement>(null);
-    const { username, setUsername } = props;
+    const { username, setUsername, clearUsername } = props;
 
     useEffect(() => {
         getDoc(doc(database, 'users', username)).then(d => d.data()).then(async userDoc => {
@@ -89,9 +89,8 @@ export default function ActiveChats(props: ActiveChatsProps) {
     }
 
     function logout() {
-        localStorage.removeItem('username');
         localStorage.removeItem('token');
-        setUsername('');
+        clearUsername();
     }
 
     function ChatList() {

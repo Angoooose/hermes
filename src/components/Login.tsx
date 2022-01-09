@@ -32,7 +32,6 @@ export default function Login(props: LoginProps) {
                 let loginTokens = [...userData?.loginTokens];
                 loginTokens.push(newToken);
                 localStorage.setItem('token', newToken);
-                localStorage.setItem('username', username);
                 setUsername(username);
 
                 updateDoc(doc(database, 'users', username), {
@@ -57,7 +56,6 @@ export default function Login(props: LoginProps) {
                 if (pin === confirmPin) {
                     const newToken = generateToken();
                     localStorage.setItem('token', newToken);
-                    localStorage.setItem('username', username);
                     setUsername(username);
                     setDoc(doc(database, 'users', username), {
                         username,
