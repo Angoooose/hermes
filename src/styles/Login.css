@@ -1,10 +1,11 @@
 .login-page {
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
     justify-content: center;
     margin: auto;
     text-align: center;
-    padding: 50px;
+    padding: 50px 10px;
 }
 
 .login-form {
@@ -19,7 +20,7 @@
     background-color: var(--bg-tertiary);
     box-shadow: var(--box-shadow);
     border-radius: var(--border-radius);
-    margin: 0 25px;
+    margin: 25px;
     padding: 25px 50px;
     width: fit-content;
 }
@@ -39,7 +40,7 @@
     border-left: 3px solid var(--primary-red);
     border-radius: var(--border-radius);
     color: var(--primary-red);
-    font-size: 15px;
+    font-size: 13px;
     margin-bottom: 5px;
     padding: 10px;
     width: 100%;
