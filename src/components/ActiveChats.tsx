@@ -6,39 +6,38 @@ import { getDoc, doc, collection, addDoc, updateDoc } from 'firebase/firestore';
 import { database } from '../index';
 import getMessageTimestamp from '../utils/getMessageTimestamp';
 
-import ChatData from '../Types/ChatData';
+import UserData, { UserChatField } from '../Types/UserData';
 
 interface ActiveChatsProps {
     username: string,
-    setUsername: Dispatch<string>,
     clearUsername: () => void,
+    userData: UserData|undefined,
+    updateUserData: (newDoc: UserData) => Promise<void>,
 }
 
 export default function ActiveChats(props: ActiveChatsProps) {
     const [isButtonDisabled, setIsButtonDisabled] = useState<boolean>(true);
     const [isNewChatError, setIsNewChatError] = useState<boolean>(false);
-    const [activeChats, setActiveChats] = useState<ChatData[]>([]);
+    const [activeChats, setActiveChats] = useState<UserChatField[]>([]);
     const newChatRef = useRef<HTMLInputElement>(null);
-    const { username, setUsername, clearUsername } = props;
+    const { username, clearUsername, userData, updateUserData } = props;
 
     useEffect(() => {
-        getDoc(doc(database, 'users', username)).then(d => d.data()).then(async userDoc => {
-            let typedUserDoc = userDoc?.chats as ChatData[];
-            let newUserDoc: ChatData[] = [];
-
-            for (let i = 0; i < typedUserDoc.length; i++) {
-                getDoc(doc(database, 'chats', typedUserDoc[i].id)).then(chatQuery => {
+        if (userData) {
+            let newUserDoc: UserChatField[] = [];
+            for (let i = 0; i < userData.chats.length; i++) {
+                getDoc(doc(database, 'chats', userData.chats[i].id)).then(chatQuery => {
                     let chatData = chatQuery.data();
                     newUserDoc.push({
-                        ...typedUserDoc[i],
+                        ...userData.chats[i],
                         lastMessage: chatData?.messages[chatData?.messages.length - 1],
                     });
-
-                    if (i === typedUserDoc.length - 1) setActiveChats(newUserDoc);
+    
+                    if (i === userData.chats.length - 1) setActiveChats(newUserDoc);
                 });
             }
-        });
-    }, []);
+        }
+    }, [userData]);
 
     async function createNewChat(e: FormEvent) {
         e.preventDefault();
@@ -53,17 +52,15 @@ export default function ActiveChats(props: ActiveChatsProps) {
                         users: [username, newUserName],
                     });
     
-                    await getDoc(doc(database, 'users', username)).then(d => d.data()).then(async userDoc => {
-                        let newChats = [...userDoc?.chats];
-                        newChats.push({
-                            id: newChat.id,
-                            name: newUserName,
-                        });
-    
-                        await updateDoc(doc(database, 'users', username), {
-                            chats: newChats,
-                        });
+                    let newChats = [...userData?.chats as UserChatField[]];
+                    newChats.push({
+                        id: newChat.id,
+                        name: newUserName,
                     });
+
+                    await updateUserData({
+                        chats: newChats,
+                    } as UserData);
     
                     await getDoc(doc(database, 'users', newUserName)).then(d => d.data()).then(async userDoc => {
                         let newChats = [...userDoc?.chats];

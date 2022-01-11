@@ -1,7 +1,6 @@
 import Message from './Message';
 
 export default interface ChatData {
-    id: string,
-    name: string,
-    lastMessage: Message,
+    messages: Message[],
+    users: string[],
 }
