@@ -6,6 +6,8 @@ import { doc, updateDoc, onSnapshot, getDoc } from 'firebase/firestore';
 import { database } from '../index';
 import getMessageTimestamp from '../utils/getMessageTimestamp';
 
+import Skeleton from 'react-loading-skeleton'
+
 import Message from '../Types/Message';
 
 interface ChatProps {
@@ -17,6 +19,7 @@ export default function Chat(props: ChatProps) {
     const [messages, setMessages] = useState<Message[]>([]);
     const [chatName, setChatName] = useState<string>('');
     const [isFailed, setIsFailed] = useState<boolean>(false);
+    const [isLoading, setIsLoading] = useState<boolean>(true);
     const lastMessageRef = useRef<HTMLDivElement>(null);
     const chatRef = useRef<HTMLInputElement>(null);
     const formRef = useRef<HTMLFormElement>(null);
@@ -27,12 +30,14 @@ export default function Chat(props: ChatProps) {
         const chatDoc = doc(database, 'chats', chatId as string);
 
         getDoc(chatDoc).then(d => d.data()).then(chatData => {
-            if (chatData && username) {
+            if (chatData && localStorage.getItem('username')) {
                 let chatUsers: string[] = chatData?.users;
-                setChatName(chatUsers.find(name => name !== username) as string);
+                setChatName(chatUsers.find(name => name !== localStorage.getItem('username')) as string);
             } else {
                 setIsFailed(true);
             }
+
+            setIsLoading(false);
         });
 
         onSnapshot(chatDoc, (doc) => {
@@ -71,7 +76,39 @@ export default function Chat(props: ChatProps) {
         }
     }
 
-    function RenderMessages() {
+    function MessageSkeletons() {
+        const skeletonsArray = [];
+        const maxHeight = window.innerHeight - 320;
+        for (let i = 0; i + 100 <= maxHeight; i += 100) {
+            skeletonsArray.push(
+                <div>
+                    <Skeleton
+                        baseColor="#171a29"
+                        highlightColor="#282d42"
+                        style={{ height: 30, width: 100, marginTop: 5, marginBottom: 5, borderRadius: '12px 12px 12px 0', opacity: 0.8 }}
+                        count={3}
+                    />
+                    <div style={{ marginLeft: 'auto', width: 'fit-content' }}>
+                        <Skeleton
+                            baseColor="#1d9bf5"
+                            highlightColor="#61b9f8"
+                            style={{ height: 30, width: 100, marginTop: 5, marginBottom: 5, borderRadius: '12px 12px 0 12px', opacity: 0.8 }}
+                            count={3}
+                        />
+                    </div>
+                </div>
+            );
+        }
+
+        return (
+            <div>
+                {skeletonsArray.map(skl => skl)}
+            </div>
+        );
+    }
+
+    function Messages() {
+        if (isLoading) return <MessageSkeletons/>
         if (messages.length > 0) {
             return (
                 <div>
@@ -118,7 +155,7 @@ export default function Chat(props: ChatProps) {
                 </div>
             </div>
             <div className="messages-container">
-                <RenderMessages/>
+                <Messages/>
                 <div ref={lastMessageRef}/>
             </div>
             <form onSubmit={(e) => sendMessage(e)} ref={formRef}>
