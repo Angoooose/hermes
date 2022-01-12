@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import useLocalStorage from '../hooks/useLocalStorage';
 import useDoc from '../hooks/useDoc';
+import deleteExpiredUsers from '../utils/expirationManager';
 
 import Header from './Header';
 import Login from './Login';
@@ -17,6 +18,10 @@ export default function App() {
     const [userData, setUserData, updateUserData, updateUserId] = useDoc<UserData>('users', username);
 
     useEffect(() => {
+        deleteExpiredUsers();
+    }, []);
+
+    useEffect(() => {
         if (username) updateUserId(username);
         setIsLoading(false);
     }, [username]);
@@ -25,10 +30,13 @@ export default function App() {
         if (userData) {
             const token = localStorage.getItem('token') as string;
             if (!userData.loginTokens.includes(token)) {
-                localStorage.removeItem('token');
-                clearUsername();
+                authFail();
             }
         } else if (!isLoading) {
+            authFail()
+        }
+
+        function authFail() {
             localStorage.removeItem('token');
             clearUsername();
         }
