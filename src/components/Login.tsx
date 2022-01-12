@@ -1,7 +1,7 @@
 import '../styles/Login.css';
 
 import { useRef, FormEvent, useState, Dispatch } from 'react';
-import { setDoc, getDoc, doc, updateDoc } from 'firebase/firestore';
+import { setDoc, getDoc, doc, updateDoc, query, collection, where, getDocs } from 'firebase/firestore';
 import { database } from '../index';
 
 interface LoginProps {
@@ -26,9 +26,16 @@ export default function Login(props: LoginProps) {
         if (loginNameRef.current!.value !== '' && loginPinRef.current!.value !== '') {
             const username = loginNameRef.current!.value;
             const pin = loginPinRef.current!.value;
-            const userDoc = await getDoc(doc(database, 'users', username));
 
-            if (userDoc.data()?.pin === pin) {
+            const userQuery = query(
+                collection(database, 'users'),
+                where('username', '==', username),
+                where('pin', '==', pin),
+            );
+
+            const userDocs = await getDocs(userQuery);
+
+            if (userDocs.docs.length > 0) {
                 const userData = await getDoc(doc(database, 'users', username)).then(d => d.data());
                 const newToken = generateToken();
                 let loginTokens = [...userData?.loginTokens];
