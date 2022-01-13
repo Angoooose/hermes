@@ -102,6 +102,7 @@ export default function Login(props: LoginProps) {
             </div>
             <div className="login-container">
                 <h1>Create Account</h1>
+                <div className="create-account-tip"><b>Tip:</b> Your account expires 48 hours after creation, and all chats are deleted.</div>
                 <form className="login-form" onSubmit={(e) => createAccount(e)}>
                     {createErrorMessage !== '' && <div className="error-box">{createErrorMessage}</div>}
                     <input className="login-input" placeholder="Username" ref={createNameRef} onChange={(el) => setIsCreateDisabled(el.target.value === '' || createPinRef.current!.value === '' || confirmPinRef.current!.value === '')}/>

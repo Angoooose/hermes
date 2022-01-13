@@ -45,3 +45,9 @@
     padding: 10px;
     width: 100%;
 }
+
+.create-account-tip {
+    color: var(--text-gray);
+    max-width: 300px;
+    margin-top: 5px;
+}
