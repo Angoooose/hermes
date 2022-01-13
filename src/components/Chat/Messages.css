@@ -1,0 +1,46 @@
+.messages-container {
+    padding: 20px 10px;
+    height: calc(100vh - 320px);
+    margin: 10px 0;
+    overflow-y: scroll;
+}
+
+.message-container {
+    margin: 10px 0;
+}
+
+.message-container-sent {
+    text-align: right;
+}
+
+.message-timestamp {
+    color: var(--text-gray);
+    font-size: 14px;
+    margin-bottom: 3px;
+}
+
+.message {
+    font-size: 16px;
+    font-weight: 300;
+    padding: 6px 10px;
+    width: fit-content;
+    max-width: 500px;
+    margin: 5px 0;
+}
+
+.message-received {
+    background-color: var(--bg-secondary);
+    border-radius: 12px 12px 12px 0;
+}
+
+.message-sent {
+    background-color: var(--primary-blue);
+    border-radius: 12px 12px 0 12px;
+    margin-left: auto;
+}
+
+.no-messages {
+    color: var(--text-gray);
+    padding: 25px 0;
+    text-align: center;
+}
