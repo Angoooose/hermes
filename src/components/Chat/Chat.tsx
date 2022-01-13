@@ -1,14 +1,14 @@
-import '../styles/Chat.css';
+import './Chat.css';
 
 import { useState, useRef, useEffect, FormEvent } from 'react';
 import { useParams } from 'react-router-dom';
 import { doc, updateDoc, onSnapshot, getDoc, arrayUnion } from 'firebase/firestore';
-import { database } from '../index';
-import getMessageTimestamp from '../utils/getMessageTimestamp';
+import { database } from '../../index';
+import getMessageTimestamp from '../../utils/getMessageTimestamp';
 
 import Skeleton from 'react-loading-skeleton'
 
-import Message from '../Types/Message';
+import Message from '../../Types/Message';
 
 interface ChatProps {
     username: string,

@@ -1,16 +1,15 @@
-import '../styles/App.css';
 import { useEffect, useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
-import useLocalStorage from '../hooks/useLocalStorage';
-import useDoc from '../hooks/useDoc';
-import deleteExpiredUsers from '../utils/deleteExpiredUsers';
+import useLocalStorage from './hooks/useLocalStorage';
+import useDoc from './hooks/useDoc';
+import deleteExpiredUsers from './utils/deleteExpiredUsers';
 
-import Header from './Header';
-import Login from './Login';
-import Chat from './Chat';
-import ActiveChats from './ActiveChats';
+import Header from './components/Header/Header';
+import Login from './components/Welcome/Welcome';
+import Chat from './components/Chat/Chat';
+import ActiveChats from './components/ActiveChats/ActiveChats';
 
-import UserData from '../Types/UserData';
+import UserData from './Types/UserData';
 
 export default function App() {
     const [isLoading, setIsLoading] = useState<boolean>(true);

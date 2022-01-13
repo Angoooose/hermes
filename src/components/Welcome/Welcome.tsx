@@ -1,8 +1,8 @@
-import '../styles/Login.css';
+import './Welcome.css';
 
 import { useRef, FormEvent, useState, Dispatch } from 'react';
 import { setDoc, getDoc, doc, updateDoc, query, collection, where, getDocs } from 'firebase/firestore';
-import { database } from '../index';
+import { database } from '../../index';
 
 interface LoginProps {
     setUsername: Dispatch<string>,

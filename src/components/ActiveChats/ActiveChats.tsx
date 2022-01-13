@@ -1,12 +1,12 @@
-import '../styles/ActiveChats.css';
+import './ActiveChats.css';
 
-import { useEffect, useState, useRef, FormEvent, Dispatch } from 'react';
+import { useEffect, useState, useRef, FormEvent } from 'react';
 
 import { getDoc, doc, collection, addDoc, updateDoc } from 'firebase/firestore';
-import { database } from '../index';
-import getMessageTimestamp from '../utils/getMessageTimestamp';
+import { database } from '../../index';
+import getMessageTimestamp from '../../utils/getMessageTimestamp';
 
-import UserData, { UserChatField } from '../Types/UserData';
+import UserData, { UserChatField } from '../../Types/UserData';
 
 interface ActiveChatsProps {
     username: string,

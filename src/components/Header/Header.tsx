@@ -1,7 +1,7 @@
-import '../styles/Header.css';
+import './Header.css';
 
-import logoImage from '../assets/logo.png';
-import githubImage from '../assets/GitHub-Mark-Light-120px-plus.png';
+import logoImage from '../../assets/logo.png';
+import githubImage from '../../assets/GitHub-Mark-Light-120px-plus.png';
 
 export default function Header() {
     return (
