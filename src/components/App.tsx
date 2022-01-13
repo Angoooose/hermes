@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import useLocalStorage from '../hooks/useLocalStorage';
 import useDoc from '../hooks/useDoc';
-import deleteExpiredUsers from '../utils/expirationManager';
+import deleteExpiredUsers from '../utils/deleteExpiredUsers';
 
 import Header from './Header';
 import Login from './Login';
