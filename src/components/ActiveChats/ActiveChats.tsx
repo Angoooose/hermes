@@ -4,7 +4,9 @@ import { useEffect, useState, useRef, FormEvent } from 'react';
 
 import { getDoc, doc, collection, addDoc, updateDoc } from 'firebase/firestore';
 import { database } from '../../index';
-import getMessageTimestamp from '../../utils/getMessageTimestamp';
+
+import ActiveChatsSkeleton from './ActiveChatsSkeleton';
+import ChatList from './ChatList';
 
 import UserData, { UserChatField } from '../../Types/UserData';
 
@@ -19,6 +21,7 @@ export default function ActiveChats(props: ActiveChatsProps) {
     const [isButtonDisabled, setIsButtonDisabled] = useState<boolean>(true);
     const [isNewChatError, setIsNewChatError] = useState<boolean>(false);
     const [activeChats, setActiveChats] = useState<UserChatField[]>([]);
+    const [isLoading, setIsLoading] = useState<boolean>(true);
     const newChatRef = useRef<HTMLInputElement>(null);
     const { username, clearUsername, userData, updateUserData } = props;
 
@@ -33,7 +36,10 @@ export default function ActiveChats(props: ActiveChatsProps) {
                         lastMessage: chatData?.messages[chatData?.messages.length - 1],
                     });
     
-                    if (i === userData.chats.length - 1) setActiveChats(newUserDoc);
+                    if (i === userData.chats.length - 1) {
+                        setActiveChats(newUserDoc);
+                        setIsLoading(false);
+                    }
                 });
             }
         }
@@ -95,31 +101,8 @@ export default function ActiveChats(props: ActiveChatsProps) {
         clearUsername();
     }
 
-    function ChatList() {
-        if (activeChats.length > 0) {
-            return (
-                <div>
-                    {activeChats.map(chat => {
-                        return (
-                            <a className="active-chat-card" href={`/chat/${chat.id}`}>
-                                <div className="active-chat-name"><span className="gray">@</span> {chat.name}</div>
-                                <div className="active-chat-right">
-                                    {chat.lastMessage ?
-                                        <div>
-                                            <div className="active-chat-timestamp">{getMessageTimestamp(new Date(chat.lastMessage.timestamp))}</div>
-                                            <div className={`active-chat-last-msg ${chat.lastMessage.author === username ? 'active-chat-last-msg-sent' : ''}`}>{chat.lastMessage.content}</div>
-                                        </div> : <div className="gray">No messages sent</div>}
-                                </div>
-                            </a>
-                        );
-                    })}
-                </div>
-            );
-        } else {
-            return <div className="no-chats">Looks like you haven't messaged anybody yet...</div>
-        }
-    }
-
+    if (isLoading) return <ActiveChatsSkeleton/>;
+    
     return (
         <div className="active-chats-container">
             <h1>Your active chats</h1>
@@ -131,7 +114,7 @@ export default function ActiveChats(props: ActiveChatsProps) {
                     </div>
                     <button className="logout-button" onClick={() => logout()}>Logout</button>
                 </div>
-                <ChatList/>
+                <ChatList activeChats={activeChats} username={username}/>
                 <form onSubmit={(e) => createNewChat(e)}>
                     <input placeholder="Username" className="full-width" ref={newChatRef} onChange={(el) => handleCreateChatTyping(el.target.value)}/>
                     <button disabled={isButtonDisabled}>Start Chatting</button>

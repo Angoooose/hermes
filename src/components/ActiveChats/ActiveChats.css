@@ -5,56 +5,6 @@
     text-align: center;
 }
 
-.no-chats {
-    color: var(--text-gray);
-    padding: 25px 0;
-}
-
-.active-chat-cards-container {
-    padding: 20px 0;
-}
-
-.active-chat-card {
-    align-items: center;
-    background-color: var(--bg-secondary);
-    border-radius: var(--border-radius);
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    margin: 15px 0;
-    padding: 15px;
-    text-align: left;
-}
-
-.active-chat-name {
-    font-weight: 600;
-    font-size: 20px;
-}
-
-.active-chat-right {
-    text-align: right;
-}
-
-.active-chat-last-msg {
-    background-color: var(--bg-tertiary);
-    border-radius: 8px 8px 0 8px;
-    font-size: 16px;
-    font-weight: 300;
-    float: right;
-    margin-top: 5px;
-    padding: 6px 10px;
-    width: fit-content;
-}
-
-.active-chat-last-msg-sent {
-    background-color: var(--primary-blue);
-}
-
-.active-chat-timestamp {
-    color: var(--text-gray);
-    font-size: 13px;
-}
-
 .active-chats-account-info {
     align-items: center;
     background-color: var(--bg-secondary);
