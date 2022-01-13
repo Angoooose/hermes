@@ -2,7 +2,7 @@ import '../styles/Chat.css';
 
 import { useState, useRef, useEffect, FormEvent } from 'react';
 import { useParams } from 'react-router-dom';
-import { doc, updateDoc, onSnapshot, getDoc } from 'firebase/firestore';
+import { doc, updateDoc, onSnapshot, getDoc, arrayUnion } from 'firebase/firestore';
 import { database } from '../index';
 import getMessageTimestamp from '../utils/getMessageTimestamp';
 
@@ -57,13 +57,15 @@ export default function Chat(props: ChatProps) {
         e.preventDefault();
 
         if (!isSendDisabled) {
-            let newMessages = [...messages];
-            newMessages.push({
+
+            const newMessageObject = {
                 author: username,
                 content: chatRef.current!.value,
                 timestamp: new Date().getTime(),
-            });
+            }
 
+            let newMessages = [...messages];
+            newMessages.push(newMessageObject);
             setMessages(newMessages);
             formRef.current?.reset();
             setIsSendDisabled(true);
@@ -71,7 +73,7 @@ export default function Chat(props: ChatProps) {
             const chatDocRef = doc(database, 'chats', chatId as string);
             
             updateDoc(chatDocRef, {
-                messages: newMessages,
+                messages: arrayUnion(newMessageObject),
             });
         }
     }
