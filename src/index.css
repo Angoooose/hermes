@@ -9,6 +9,8 @@
     --primary-red: #f52043;
     --secondary-red: rgba(245, 32, 67, 0.3);
     --border-radius: 5px;
+    --msg-left-border-radius: 12px 12px 12px 0;
+    --msg-right-border-radius: 12px 12px 0 12px;
     --text: #fff;
     --text-gray: gray;
     --font: 'Merriweather Sans', sans-serif;
