@@ -30,7 +30,7 @@
 
 .active-chat-last-msg {
     background-color: var(--bg-tertiary);
-    border-radius: 8px 8px 0 8px;
+    border-radius: var(--msg-right-border-radius);
     font-size: 16px;
     font-weight: 300;
     float: right;

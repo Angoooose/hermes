@@ -9,13 +9,12 @@ export default function MessageSkeletons() {
         const newSkeletonsArray = [];
         const maxHeight = window.innerHeight - 320;
         for (let i = 0; i + 200 < maxHeight; i += 200) {
-            console.log(i);
             newSkeletonsArray.push(
                 <SkeletonTheme height={30} width={100}>
                     <Skeleton
                         baseColor="#171a29"
                         highlightColor="#282d42"
-                        style={{ borderRadius: '12px 12px 12px 0' }}
+                        style={{ borderRadius: 'var(--msg-left-border-radius)' }}
                         className="message-skeleton"
                         count={3}
                     />
@@ -23,7 +22,7 @@ export default function MessageSkeletons() {
                         <Skeleton
                             baseColor="#1d9bf5"
                             highlightColor="#61b9f8"
-                            style={{ borderRadius: '12px 12px 0 12px' }}
+                            style={{ borderRadius: 'var(--msg-right-border-radius)' }}
                             className="message-skeleton"
                             count={3}
                         />
