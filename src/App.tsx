@@ -5,7 +5,7 @@ import useDoc from './hooks/useDoc';
 import deleteExpiredUsers from './utils/deleteExpiredUsers';
 
 import Header from './components/Header/Header';
-import Login from './components/Welcome/Welcome';
+import Welcome from './components/Welcome/Welcome';
 import Chat from './components/Chat/Chat';
 import ActiveChats from './components/ActiveChats/ActiveChats';
 
@@ -43,11 +43,11 @@ export default function App() {
 
     return (
         <div className="app">
-                <Header/>
-                <Routes>
-                    <Route path="/" element={username ? <ActiveChats username={username} clearUsername={clearUsername} userData={userData} updateUserData={updateUserData}/> : <Login setUsername={setUsername}/>}/>
-                    <Route path="/chat/:chatId" element={<Chat username={username as string}/>}/>
-                </Routes>
+            <Header/>
+            <Routes>
+                <Route path="/" element={username ? <ActiveChats username={username} clearUsername={clearUsername} userData={userData} updateUserData={updateUserData}/> : <Welcome setUsername={setUsername}/>}/>
+                <Route path="/chat/:chatId" element={<Chat username={username as string}/>}/>
+            </Routes>
         </div>
     );
 }
