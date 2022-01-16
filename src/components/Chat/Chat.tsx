@@ -2,8 +2,7 @@ import './Chat.css';
 
 import { useState, useRef, useEffect, FormEvent } from 'react';
 import { useParams } from 'react-router-dom';
-import { doc, updateDoc, onSnapshot, getDoc, arrayUnion } from 'firebase/firestore';
-import { database } from '../../index';
+import ChatService from '../../services/ChatService';
 import Message from '../../Types/Message';
 import Messages from './Messages';
 
@@ -12,6 +11,9 @@ interface ChatProps {
 }
 
 export default function Chat(props: ChatProps) {
+    const { username } = props;
+    const { chatId } = useParams();
+
     const [isSendDisabled, setIsSendDisabled] = useState<boolean>(true);
     const [messages, setMessages] = useState<Message[]>([]);
     const [chatName, setChatName] = useState<string>('');
@@ -20,26 +22,23 @@ export default function Chat(props: ChatProps) {
     const lastMessageRef = useRef<HTMLDivElement>(null);
     const chatRef = useRef<HTMLInputElement>(null);
     const formRef = useRef<HTMLFormElement>(null);
-    const { username } = props;
-    const { chatId } = useParams();
-    
+
     useEffect(() => {
-        const chatDoc = doc(database, 'chats', chatId as string);
-
-        getDoc(chatDoc).then(d => d.data()).then(chatData => {
-            if (chatData && localStorage.getItem('username')) {
-                let chatUsers: string[] = chatData?.users;
-                setChatName(chatUsers.find(name => name !== localStorage.getItem('username')) as string);
-            } else {
-                setIsFailed(true);
-            }
-
-            setIsLoading(false);
-        });
-
-        onSnapshot(chatDoc, (doc) => {
-            setMessages(doc.data()?.messages as Message[]);
-        });
+        if (chatId) {
+            const service = new ChatService(chatId);
+            service.getChatData().then(chatData => {
+                if (chatData) {
+                    service.liveMessageUpdate(setMessages);
+                    setChatName(chatData?.users.find(u => u !== localStorage.getItem('username')) as string);
+                    setMessages(chatData?.messages);
+                    setIsLoading(false);
+                } else {
+                    setIsFailed(true);
+                }
+            });
+        } else {
+            setIsFailed(true);
+        }
     }, []);
 
     useEffect(() => {
@@ -53,9 +52,9 @@ export default function Chat(props: ChatProps) {
     function sendMessage(e: FormEvent) {
         e.preventDefault();
 
+        if (isFailed) return;
         if (!isSendDisabled) {
-
-            const newMessageObject = {
+            const newMessageObject: Message = {
                 author: username,
                 content: chatRef.current!.value,
                 timestamp: new Date().getTime(),
@@ -66,19 +65,16 @@ export default function Chat(props: ChatProps) {
             setMessages(newMessages);
             formRef.current?.reset();
             setIsSendDisabled(true);
-
-            const chatDocRef = doc(database, 'chats', chatId as string);
             
-            updateDoc(chatDocRef, {
-                messages: arrayUnion(newMessageObject),
-            });
+            const service = new ChatService(chatId as string);
+            service.addMessage(newMessageObject);
         }
     }
 
     if (isFailed) return (
        <div className="failed-container">
            <div className="failed-header">404</div>
-           <div className="failed-description">We couldn't find that chat. Maybe if you were logged into a different account we could find it.</div>
+           <div className="failed-description">We couldn't find that chat. You may be signed into the wrong account or the chat expired.</div>
        </div> 
     );
 
@@ -100,7 +96,7 @@ export default function Chat(props: ChatProps) {
             </div>
             <form onSubmit={(e) => sendMessage(e)} ref={formRef}>
                 <input placeholder={`Send a message to @${chatName}`} className="full-width" ref={chatRef} onChange={(el) => setIsSendDisabled(el.target.value === '')}/>
-                <button disabled={isSendDisabled}>Send</button>
+                <button disabled={isSendDisabled || isLoading}>Send</button>
             </form>
         </div>
     );
