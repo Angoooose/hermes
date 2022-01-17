@@ -1,14 +1,14 @@
 import './ActiveChats.css';
 
 import { useEffect, useState, useRef, FormEvent } from 'react';
-
-import { getDoc, doc, collection, addDoc, updateDoc } from 'firebase/firestore';
+import { getDoc, doc } from 'firebase/firestore';
 import { database } from '../../index';
 
 import ActiveChatsSkeleton from './ActiveChatsSkeleton';
 import ChatList from './ChatList';
 
 import UserData, { UserChatField } from '../../Types/UserData';
+import ActiveChatsService from '../../services/ActiveChatsService';
 
 interface ActiveChatsProps {
     username: string,
@@ -23,25 +23,13 @@ export default function ActiveChats(props: ActiveChatsProps) {
     const [activeChats, setActiveChats] = useState<UserChatField[]>([]);
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const newChatRef = useRef<HTMLInputElement>(null);
-    const { username, clearUsername, userData, updateUserData } = props;
+
+    const { username, clearUsername, userData } = props;
+    const service = new ActiveChatsService(userData as UserData);
 
     useEffect(() => {
         if (userData) {
-            let newUserDoc: UserChatField[] = [];
-            for (let i = 0; i < userData.chats.length; i++) {
-                getDoc(doc(database, 'chats', userData.chats[i].id)).then(chatQuery => {
-                    let chatData = chatQuery.data();
-                    newUserDoc.push({
-                        ...userData.chats[i],
-                        lastMessage: chatData?.messages[chatData?.messages.length - 1],
-                    });
-    
-                    if (i === userData.chats.length - 1) {
-                        setActiveChats(newUserDoc);
-                        setIsLoading(false);
-                    }
-                });
-            }
+            service.getChats(activeChats, setActiveChats, setIsLoading);
         }
     }, [userData]);
 
@@ -49,40 +37,15 @@ export default function ActiveChats(props: ActiveChatsProps) {
         e.preventDefault();
 
         if (newChatRef !== null && newChatRef.current?.value !== '') {
-            const newUserName = newChatRef.current?.value as string;
-            const newUserData = await getDoc(doc(database, 'users', newUserName)).then(d => d.data());
-            if (newUserData) {
-                if (!activeChats.some(c => c.name === newUserName)) {
-                    let newChat = await addDoc(collection(database, 'chats'), {
-                        messages: [],
-                        users: [username, newUserName],
+            const newUsername = newChatRef.current?.value as string;
+            const newUser = await getDoc(doc(database, 'users', newUsername));
+            if (newUser.exists()) {
+                if (!activeChats.some(c => c.name === newUsername)) {
+                    service.createChat(newUsername).then(chatId => {
+                        window.location.replace(`/chat/${chatId}`);
                     });
-    
-                    let newChats = [...userData?.chats as UserChatField[]];
-                    newChats.push({
-                        id: newChat.id,
-                        name: newUserName,
-                    });
-
-                    await updateUserData({
-                        chats: newChats,
-                    } as UserData);
-    
-                    await getDoc(doc(database, 'users', newUserName)).then(d => d.data()).then(async userDoc => {
-                        let newChats = [...userDoc?.chats];
-                        newChats.push({
-                            id: newChat.id,
-                            name: username,
-                        });
-    
-                        await updateDoc(doc(database, 'users', newUserName), {
-                            chats: newChats,
-                        });
-                    });
-    
-                    window.location.replace(`/chat/${newChat.id}`);
                 } else {
-                    window.location.replace(`/chat/${activeChats.find(c => c.name === newUserName)?.id}`);
+                    window.location.replace(`/chat/${activeChats.find(c => c.name === newUsername)?.id}`);
                 }
             } else {
                 setIsNewChatError(true);
@@ -99,6 +62,7 @@ export default function ActiveChats(props: ActiveChatsProps) {
     function logout() {
         localStorage.removeItem('token');
         clearUsername();
+        window.location.reload();
     }
 
     if (isLoading) return <ActiveChatsSkeleton/>;
