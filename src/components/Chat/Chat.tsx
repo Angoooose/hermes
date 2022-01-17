@@ -23,9 +23,10 @@ export default function Chat(props: ChatProps) {
     const chatRef = useRef<HTMLInputElement>(null);
     const formRef = useRef<HTMLFormElement>(null);
 
+    const service = new ChatService(chatId as string);
+
     useEffect(() => {
         if (chatId) {
-            const service = new ChatService(chatId);
             service.getChatData().then(chatData => {
                 if (chatData) {
                     service.liveMessageUpdate(setMessages);
@@ -66,7 +67,6 @@ export default function Chat(props: ChatProps) {
             formRef.current?.reset();
             setIsSendDisabled(true);
             
-            const service = new ChatService(chatId as string);
             service.addMessage(newMessageObject);
         }
     }
