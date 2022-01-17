@@ -35,6 +35,7 @@
     font-weight: 300;
     float: right;
     margin-top: 5px;
+    max-width: 400px;
     padding: 6px 10px;
     width: fit-content;
 }

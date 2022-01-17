@@ -14,7 +14,7 @@ export default function ChatList(props: ChatListProps) {
     if (activeChats.length > 0) {
         return (
             <div>
-                {activeChats.map(chat => {
+                {activeChats.filter(c => c.lastMessage).map(chat => {
                     return (
                         <a className="active-chat-card" href={`/chat/${chat.id}`}>
                             <div className="active-chat-name"><span className="gray">@</span> {chat.name}</div>
