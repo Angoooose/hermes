@@ -18,6 +18,13 @@
 
 .active-chats-account-info-big {
     font-size: 35px;
+    font-weight: 700;
+}
+
+.active-chats-account-info-small {
+    color: var(--text-gray);
+    font-size: 14px;
+    margin-top: 5px;
 }
 
 .logout-button {

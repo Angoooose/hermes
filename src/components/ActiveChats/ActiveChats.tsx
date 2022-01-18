@@ -3,6 +3,7 @@ import './ActiveChats.css';
 import { useEffect, useState, useRef, FormEvent } from 'react';
 import { getDoc, doc } from 'firebase/firestore';
 import { database } from '../../index';
+import useTimeUntil from '../../hooks/useTimeUntil';
 
 import ActiveChatsSkeleton from './ActiveChatsSkeleton';
 import ChatList from './ChatList';
@@ -27,9 +28,12 @@ export default function ActiveChats(props: ActiveChatsProps) {
     const { username, clearUsername, userData } = props;
     const service = new ActiveChatsService(userData as UserData);
 
+    const [timeUntil, editTime] = useTimeUntil(userData?.expiresAt);
+
     useEffect(() => {
         if (userData) {
             service.getChats(activeChats, setActiveChats, setIsLoading);
+            editTime(userData.expiresAt);
         }
     }, [userData]);
 
@@ -75,6 +79,7 @@ export default function ActiveChats(props: ActiveChatsProps) {
                     <div>
                         <div className="gray">Signed in as:</div>
                         <div className="active-chats-account-info-big"><span className="gray">@</span> {username}</div>
+                        <div className="active-chats-account-info-small">Expires in {timeUntil}</div>
                     </div>
                     <button className="logout-button" onClick={() => logout()}>Logout</button>
                 </div>
