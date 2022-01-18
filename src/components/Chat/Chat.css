@@ -14,12 +14,27 @@
 }
 
 .chat-header-big {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
     font-weight: 700;
     font-size: 35px;
 }
 
 .chat-header-right {
     text-align: right;
+}
+
+.chat-at-icon {
+    color: var(--text-gray);
+    margin-right: 5px;
+    width: 40px;
+}
+
+.chat-account-icon {
+    color: var(--primary-blue);
+    margin-right: 5px;
+    width: 50px;
 }
 
 .failed-container {

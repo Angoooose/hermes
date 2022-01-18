@@ -1,6 +1,7 @@
 import './Chat.css';
 
 import { useState, useRef, useEffect, FormEvent } from 'react';
+import { UserCircleIcon, AtSymbolIcon } from '@heroicons/react/outline';
 import { useParams } from 'react-router-dom';
 import ChatService from '../../services/ChatService';
 import Message from '../../Types/Message';
@@ -83,11 +84,11 @@ export default function Chat(props: ChatProps) {
             <div className="chat-header">
                 <div>
                     <div className="gray">Chatting with:</div>
-                    <div className="chat-header-big"><span className="gray">@</span> {chatName}</div>
+                    <div className="chat-header-big"><AtSymbolIcon className="chat-at-icon"/>{chatName}</div>
                 </div>
                 <div className="chat-header-right">
                     <div className="gray">Signed in as:</div>
-                    <div className="chat-header-big"><span className="gray">@</span> {username}</div>
+                    <a className="chat-header-big" href="/"><UserCircleIcon className="chat-account-icon"/>{username}</a>
                 </div>
             </div>
             <div className="messages-container">
