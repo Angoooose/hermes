@@ -10,11 +10,12 @@ interface ChatListProps {
 
 export default function ChatList(props: ChatListProps) {
     const { activeChats, username } = props;
+    const filteredChats = activeChats.filter(c => c.lastMessage);
 
-    if (activeChats.length > 0) {
+    if (filteredChats.length > 0) {
         return (
             <div>
-                {activeChats.filter(c => c.lastMessage).map(chat => {
+                {filteredChats.map(chat => {
                     return (
                         <a className="active-chat-card" href={`/chat/${chat.id}`}>
                             <div className="active-chat-name"><span className="gray">@</span> {chat.name}</div>
