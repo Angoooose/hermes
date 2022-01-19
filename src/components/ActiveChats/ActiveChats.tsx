@@ -16,7 +16,7 @@ interface ActiveChatsProps {
     username: string,
     clearUsername: () => void,
     userData: UserData|undefined,
-    updateUserData: (newDoc: UserData) => Promise<void>,
+    updateUserData: (newUserData: UserData) => Promise<boolean>,
 }
 
 export default function ActiveChats(props: ActiveChatsProps) {

@@ -6,10 +6,11 @@ import generateToken from '../../utils/generateToken';
 
 interface CreateAccountProps {
     setUsername: Dispatch<string>,
+    setToken: Dispatch<string>,
 }
 
 export default function CreateAccount(props: CreateAccountProps) {
-    const { setUsername } = props;
+    const { setUsername, setToken } = props;
     
     const [isDisabled, setIsDisabled] = useState<boolean>(true);
     const [errorMessage, setErrorMessage] = useState<string>('');
@@ -28,7 +29,7 @@ export default function CreateAccount(props: CreateAccountProps) {
             if (!userDoc.exists()) {
                 if (pin === confirmPin) {
                     const newToken = generateToken();
-                    localStorage.setItem('token', newToken);
+                    setToken(newToken);
                     setUsername(username);
                     setDoc(doc(database, 'users', username), {
                         username,

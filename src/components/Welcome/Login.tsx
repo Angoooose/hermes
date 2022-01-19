@@ -6,10 +6,11 @@ import UserData from '../../Types/UserData';
 
 interface LoginProps {
     setUsername: Dispatch<string>,
+    setToken: Dispatch<string>,
 }
 
 export default function Login(props: LoginProps) {
-    const { setUsername } = props;
+    const { setUsername, setToken } = props;
 
     const [isDisabled, setIsDisabled] = useState<boolean>(true);
     const [errorMessage, setErrorMessage] = useState<string>('');
@@ -36,7 +37,7 @@ export default function Login(props: LoginProps) {
                 const newToken = generateToken();
                 let loginTokens = [...userData?.loginTokens];
                 loginTokens.push(newToken);
-                localStorage.setItem('token', newToken);
+                setToken(newToken);
                 setUsername(username);
 
                 updateDoc(doc(database, 'users', username), {
