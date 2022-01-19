@@ -20,16 +20,16 @@ interface ActiveChatsProps {
 }
 
 export default function ActiveChats(props: ActiveChatsProps) {
+    const { username, clearUsername, userData } = props;
+    const service = new ActiveChatsService(userData as UserData);
+
     const [isButtonDisabled, setIsButtonDisabled] = useState<boolean>(true);
     const [isNewChatError, setIsNewChatError] = useState<boolean>(false);
     const [activeChats, setActiveChats] = useState<UserChatField[]>([]);
     const [isLoading, setIsLoading] = useState<boolean>(true);
-    const newChatRef = useRef<HTMLInputElement>(null);
-
-    const { username, clearUsername, userData } = props;
-    const service = new ActiveChatsService(userData as UserData);
-
     const [timeUntil, editTime] = useTimeUntil(userData?.expiresAt);
+    const newChatRef = useRef<HTMLInputElement>(null);
+    
 
     useEffect(() => {
         if (userData) {

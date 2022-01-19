@@ -22,7 +22,7 @@ export default function ActiveChatsSkeleton() {
                         <div className="account-info-big" style={{ fontSize: 0 }}>
                             <Skeleton circle width={50} height={50} style={{ marginRight: 10 }}/>
                             <div>
-                                <Skeleton width={160} height={40} style={{ marginBottom: 5}}/>
+                                <Skeleton width={160} height={40} style={{ marginBottom: 5 }}/>
                                 <Skeleton width={125} height={10}/>
                             </div>
                         </div>
