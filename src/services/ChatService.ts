@@ -12,10 +12,18 @@ export default class ChatService {
         this.documentRef = doc(database, 'chats', chatId);
     };
 
-    public getChatData(): Promise<ChatData|undefined> {
+    public getChatData(username: string): Promise<ChatData|0> {
         return new Promise(resolve => {
             getDoc(this.documentRef).then(d => d.data()).then(res => {
-                resolve(res as ChatData|undefined);
+                if (res) {
+                    if (res.users.includes(username)) {
+                        resolve(res as ChatData);
+                    } else {
+                        resolve(0);
+                    }
+                } else {
+                    resolve(0);
+                }
             });
         });
     }

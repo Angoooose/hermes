@@ -4,8 +4,8 @@ import UserData from '../Types/UserData';
 import { query, collection, where, doc, updateDoc, onSnapshot } from 'firebase/firestore';
 import { database } from '../index';
 
-export default function useAuth(username: string|undefined, token: string|undefined, setIsLoading: Dispatch<boolean>): [UserData|undefined, (newUserData: UserData) => Promise<boolean>] {
-    const [userData, setUserData] = useState<UserData>();
+export default function useAuth(username: string|undefined, token: string|undefined, setIsLoading: Dispatch<boolean>): [UserData|0|undefined, (newUserData: UserData) => Promise<boolean>] {
+    const [userData, setUserData] = useState<UserData|0>();
     const [isAuthed, setIsAuthed] = useState<boolean>(false);
 
     useEffect(() => {
@@ -20,6 +20,8 @@ export default function useAuth(username: string|undefined, token: string|undefi
                 if (snap.docs.length > 0) {
                     setUserData(snap.docs[0].data() as UserData);
                     setIsAuthed(true);
+                } else {
+                    setUserData(0);
                 }
 
                 setIsLoading(false);

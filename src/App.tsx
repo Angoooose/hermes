@@ -20,18 +20,20 @@ export default function App() {
     }, []);
 
     useEffect(() => {
-        if (!userData && !isLoading) {
+        if (userData === 0 && !isLoading) {
             clearUsername();
             clearToken();
         }
     }, [userData]);
 
+    if (isLoading) return <div/>;
+
     return (
         <div className="app">
             <Header/>
             <Routes>
-                <Route path="/" element={username ? <ActiveChats username={username} clearUsername={clearUsername} userData={userData} updateUserData={updateUserData}/> : <Welcome setUsername={setUsername} setToken={setToken}/>}/>
-                <Route path="/chat/:chatId" element={<Chat username={username as string}/>}/>
+                <Route path="/" element={userData ? <ActiveChats username={username as string} clearUsername={clearUsername} userData={userData} updateUserData={updateUserData}/> : <Welcome setUsername={setUsername} setToken={setToken}/>}/>
+                <Route path="/chat/:chatId" element={<Chat userData={userData}/>}/>
             </Routes>
         </div>
     );

@@ -6,13 +6,14 @@ import { useParams } from 'react-router-dom';
 import ChatService from '../../services/ChatService';
 import Message from '../../Types/Message';
 import Messages from './Messages';
+import UserData from '../../Types/UserData';
 
 interface ChatProps {
-    username: string,
+    userData: UserData|0|undefined,
 }
 
 export default function Chat(props: ChatProps) {
-    const { username } = props;
+    const { userData } = props;
     const { chatId } = useParams();
 
     const [isSendDisabled, setIsSendDisabled] = useState<boolean>(true);
@@ -27,12 +28,12 @@ export default function Chat(props: ChatProps) {
     const service = new ChatService(chatId as string);
 
     useEffect(() => {
-        if (chatId) {
-            service.getChatData().then(chatData => {
-                if (chatData) {
+        if (chatId && userData) {
+            service.getChatData(userData?.username).then(chatData => {
+                if (chatData !== 0) {
                     service.liveMessageUpdate(setMessages);
-                    setChatName(chatData?.users.find(u => u !== localStorage.getItem('username')) as string);
-                    setMessages(chatData?.messages);
+                    setChatName(chatData.users.find(u => u !== userData?.username) as string);
+                    setMessages(chatData.messages);
                     setIsLoading(false);
                 } else {
                     setIsFailed(true);
@@ -41,7 +42,7 @@ export default function Chat(props: ChatProps) {
         } else {
             setIsFailed(true);
         }
-    }, []);
+    }, [userData]);
 
     useEffect(() => {
         lastMessageRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -54,10 +55,10 @@ export default function Chat(props: ChatProps) {
     function sendMessage(e: FormEvent) {
         e.preventDefault();
 
-        if (isFailed) return;
+        if (isFailed || !userData) return;
         if (!isSendDisabled) {
             const newMessageObject: Message = {
-                author: username,
+                author: userData?.username,
                 content: chatRef.current!.value,
                 timestamp: new Date().getTime(),
             }
@@ -88,11 +89,11 @@ export default function Chat(props: ChatProps) {
                 </div>
                 <div className="chat-header-right">
                     <div className="gray">Signed in as:</div>
-                    <a className="chat-header-big" href="/"><UserCircleIcon className="chat-account-icon"/>{username}</a>
+                    <a className="chat-header-big" href="/"><UserCircleIcon className="chat-account-icon"/>{userData !== 0 ? userData?.username : '...'}</a>
                 </div>
             </div>
             <div className="messages-container">
-                <Messages messages={messages} isLoading={isLoading} username={username}/>
+                <Messages messages={messages} isLoading={isLoading} username={userData !== 0 ? userData?.username as string : '...'}/>
                 <div ref={lastMessageRef}/>
             </div>
             <form onSubmit={(e) => sendMessage(e)} ref={formRef}>
