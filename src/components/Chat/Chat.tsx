@@ -4,8 +4,11 @@ import { useState, useRef, useEffect, FormEvent } from 'react';
 import { UserCircleIcon, AtSymbolIcon } from '@heroicons/react/outline';
 import { useParams } from 'react-router-dom';
 import ChatService from '../../services/ChatService';
-import Message from '../../Types/Message';
+
 import Messages from './Messages';
+import Button from '../common/Button/Button';
+
+import Message from '../../Types/Message';
 import UserData from '../../Types/UserData';
 import AuthStatus from '../../Types/AuthStatus';
 
@@ -102,7 +105,7 @@ export default function Chat(props: ChatProps) {
             </div>
             <form onSubmit={(e) => sendMessage(e)} ref={formRef}>
                 <input placeholder={`Send a message to @${chatName}`} className="full-width" ref={chatRef} onChange={(el) => setIsSendDisabled(el.target.value === '')}/>
-                <button disabled={isSendDisabled || authStatus === 'LOADING'}>Send</button>
+                <Button text="Send" disabled={isSendDisabled || authStatus === 'LOADING'}></Button>
             </form>
         </div>
     );

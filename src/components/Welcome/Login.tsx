@@ -4,6 +4,7 @@ import { database } from '../../index';
 import generateToken from '../../utils/generateToken';
 import UserData from '../../Types/UserData';
 import AuthData from '../../Types/AuthData';
+import Button from '../common/Button/Button';
 
 interface LoginProps {
     setAuthData: Dispatch<AuthData>,
@@ -13,6 +14,7 @@ export default function Login(props: LoginProps) {
     const { setAuthData } = props;
 
     const [isDisabled, setIsDisabled] = useState<boolean>(true);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
     const [errorMessage, setErrorMessage] = useState<string>('');
     const usernameRef = useRef<HTMLInputElement>(null);
     const pinRef = useRef<HTMLInputElement>(null);
@@ -33,6 +35,7 @@ export default function Login(props: LoginProps) {
             const userDocs = await getDocs(userQuery);
 
             if (userDocs.docs.length > 0) {
+                setIsLoading(true);
                 const userData = userDocs.docs[0].data() as UserData;
                 const newToken = generateToken();
 
@@ -60,7 +63,7 @@ export default function Login(props: LoginProps) {
                 {errorMessage !== '' && <div className="error-box">{errorMessage}</div>}
                 <input className="welcome-input" placeholder="Username" ref={usernameRef} onChange={(el) => setIsDisabled(el.target.value === '' || pinRef.current!.value === '')}/>
                 <input className="welcome-input" placeholder="Pin" type="password" ref={pinRef} onChange={(el) => setIsDisabled(el.target.value === '' || usernameRef.current!.value === '')}/>
-                <button className="welcome-button" disabled={isDisabled}>Login</button>
+                <Button text="Login" className="welcome-button" isLoading={isLoading} disabled={isDisabled || isLoading}></Button>
             </form>
         </div>
     )

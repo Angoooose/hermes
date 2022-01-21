@@ -54,29 +54,6 @@ input:focus, input:hover {
     border-bottom: 2px solid var(--primary-blue);
 }
 
-button {
-    background-color: var(--primary-blue);
-    border: none;
-    border-radius: var(--border-radius);
-    color: var(--text);
-    cursor: pointer;
-    margin: 0px 10px;
-    outline: none;
-    padding: 10px 15px;
-    user-select: none;
-    transition: 0.5s;
-    white-space: nowrap;
-}
-
-button:hover {
-    opacity: 0.8;
-}
-
-button:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-}
-
 form {
     display: flex;
     flex-direction: row;

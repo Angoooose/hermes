@@ -4,6 +4,7 @@ import { getDoc, doc, setDoc } from 'firebase/firestore';
 import { database } from '../../index';
 import generateToken from '../../utils/generateToken';
 import AuthData from '../../Types/AuthData';
+import Button from '../common/Button/Button';
 
 interface CreateAccountProps {
     setAuthData: Dispatch<AuthData>,
@@ -13,6 +14,7 @@ export default function CreateAccount(props: CreateAccountProps) {
     const { setAuthData } = props;
     
     const [isDisabled, setIsDisabled] = useState<boolean>(true);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
     const [errorMessage, setErrorMessage] = useState<string>('');
     const usernameRef = useRef<HTMLInputElement>(null);
     const pinRef = useRef<HTMLInputElement>(null);
@@ -28,6 +30,8 @@ export default function CreateAccount(props: CreateAccountProps) {
             const userDoc = await getDoc(doc(database, 'users', username));
             if (!userDoc.exists()) {
                 if (pin === confirmPin) {
+                    setIsLoading(true);
+                    setIsDisabled(true);
                     const newToken = generateToken();
                     setDoc(doc(database, 'users', username), {
                         username,
@@ -61,7 +65,7 @@ export default function CreateAccount(props: CreateAccountProps) {
                 <input className="welcome-input" placeholder="Username" ref={usernameRef} onChange={(el) => setIsDisabled(el.target.value === '' || pinRef.current!.value === '' || confirmPinRef.current!.value === '')}/>
                 <input className="welcome-input" placeholder="Pin" type="password" ref={pinRef} onChange={(el) => setIsDisabled(el.target.value === '' || usernameRef.current!.value === '' || confirmPinRef.current!.value === '')}/>
                 <input className="welcome-input" placeholder="Confirm Pin" type="password" ref={confirmPinRef} onChange={(el) => setIsDisabled(el.target.value === '' || usernameRef.current!.value === '' || pinRef.current!.value === '')}/>
-                <button className="welcome-button" disabled={isDisabled}>Create Account</button>
+                <Button className="welcome-button" text="Create Account" isLoading={isLoading} disabled={isDisabled || isLoading}></Button>
             </form>
         </div>
     )

@@ -11,6 +11,7 @@ import ActiveChatsService from '../../services/ActiveChatsService';
 
 import ActiveChatsSkeleton from './ActiveChatsSkeleton';
 import ChatList from './ChatList';
+import Button from '../common/Button/Button';
 
 interface ActiveChatsProps {
     clearAuthData: () => void,
@@ -67,7 +68,7 @@ export default function ActiveChats(props: ActiveChatsProps) {
         clearAuthData();
         window.location.reload();
     }
-    
+
     if (isLoading) return <ActiveChatsSkeleton/>;
     
     return (
@@ -82,12 +83,12 @@ export default function ActiveChats(props: ActiveChatsProps) {
                             <div className="account-info-expiration-container"><ClockIcon className="account-info-clock-icon"/>Expires in {timeUntil}</div>
                         </div>
                     </div>
-                    <button className="logout-button" onClick={() => logout()}>Logout</button>
+                    <Button text="Logout" isRed={true} onClick={() => logout()}></Button>
                 </div>
                 <ChatList activeChats={activeChats} username={userData?.username as string}/>
                 <form onSubmit={(e) => createNewChat(e)}>
                     <input placeholder="Username" className="full-width" ref={newChatRef} onChange={(el) => handleCreateChatTyping(el.target.value)}/>
-                    <button disabled={isButtonDisabled}>Start Chatting</button>
+                    <Button text="Start Chatting" disabled={isButtonDisabled}></Button>
                 </form>
                 {isNewChatError && <div className="input-error">Please enter a valid username.</div>}
             </div>
