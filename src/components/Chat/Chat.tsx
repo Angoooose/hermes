@@ -7,13 +7,15 @@ import ChatService from '../../services/ChatService';
 import Message from '../../Types/Message';
 import Messages from './Messages';
 import UserData from '../../Types/UserData';
+import AuthStatus from '../../Types/AuthStatus';
 
 interface ChatProps {
-    userData: UserData|0|undefined,
+    userData: UserData|undefined,
+    authStatus: AuthStatus,
 }
 
 export default function Chat(props: ChatProps) {
-    const { userData } = props;
+    const { userData, authStatus } = props;
     const { chatId } = useParams();
 
     const [isSendDisabled, setIsSendDisabled] = useState<boolean>(true);
@@ -28,21 +30,23 @@ export default function Chat(props: ChatProps) {
     const service = new ChatService(chatId as string);
 
     useEffect(() => {
-        if (chatId && userData) {
-            service.getChatData(userData?.username).then(chatData => {
-                if (chatData !== 0) {
-                    service.liveMessageUpdate(setMessages);
-                    setChatName(chatData.users.find(u => u !== userData?.username) as string);
-                    setMessages(chatData.messages);
-                    setIsLoading(false);
-                } else {
-                    setIsFailed(true);
-                }
-            });
-        } else {
-            setIsFailed(true);
+        if (authStatus !== 'LOADING') {
+            if (chatId && userData) {
+                service.getChatData(userData?.username).then(chatData => {
+                    if (chatData !== 0) {
+                        service.liveMessageUpdate(setMessages);
+                        setChatName(chatData.users.find(u => u !== userData?.username) as string);
+                        setMessages(chatData.messages);
+                        setIsLoading(false);
+                    } else {
+                        setIsFailed(true);
+                    }
+                });
+            } else {
+                setIsFailed(true);
+            }
         }
-    }, [userData]);
+    }, [userData, authStatus]);
 
     useEffect(() => {
         lastMessageRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -89,16 +93,16 @@ export default function Chat(props: ChatProps) {
                 </div>
                 <div className="chat-header-right">
                     <div className="gray">Signed in as:</div>
-                    <a className="chat-header-big" href="/"><UserCircleIcon className="chat-account-icon"/>{userData !== 0 ? userData?.username : '...'}</a>
+                    <a className="chat-header-big" href="/"><UserCircleIcon className="chat-account-icon"/>{userData?.username}</a>
                 </div>
             </div>
             <div className="messages-container">
-                <Messages messages={messages} isLoading={isLoading} username={userData !== 0 ? userData?.username as string : '...'}/>
+                <Messages messages={messages} isLoading={isLoading} username={userData?.username as string}/>
                 <div ref={lastMessageRef}/>
             </div>
             <form onSubmit={(e) => sendMessage(e)} ref={formRef}>
                 <input placeholder={`Send a message to @${chatName}`} className="full-width" ref={chatRef} onChange={(el) => setIsSendDisabled(el.target.value === '')}/>
-                <button disabled={isSendDisabled || isLoading}>Send</button>
+                <button disabled={isSendDisabled || authStatus === 'LOADING'}>Send</button>
             </form>
         </div>
     );

@@ -12,4 +12,5 @@ export default interface UserData {
     expiresAt: number,
     chats: UserChatField[],
     loginTokens: string[],
+    status?: 'LOADING'|'SUCCESS'|'FAILED'|'LOGIN',
 }

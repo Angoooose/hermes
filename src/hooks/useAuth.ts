@@ -1,40 +1,43 @@
-import { Dispatch, useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import UserData from '../Types/UserData';
 
 import { query, collection, where, doc, updateDoc, onSnapshot } from 'firebase/firestore';
 import { database } from '../index';
 
-export default function useAuth(username: string|undefined, token: string|undefined, setIsLoading: Dispatch<boolean>): [UserData|0|undefined, (newUserData: UserData) => Promise<boolean>] {
-    const [userData, setUserData] = useState<UserData|0>();
+import AuthData from '../Types/AuthData';
+import AuthStatus from '../Types/AuthStatus';
+
+export default function useAuth(authData: AuthData|'LOADING'|null): [UserData|undefined, (newUserData: UserData) => Promise<boolean>, AuthStatus] {
+    const [userData, setUserData] = useState<UserData>();
+    const [status, setStatus] = useState<AuthStatus>('LOADING');
     const [isAuthed, setIsAuthed] = useState<boolean>(false);
 
     useEffect(() => {
-        if (username && token) {
+        if (authData && authData !== 'LOADING' && authData.username && authData.token) {
             const userQuery = query(
                 collection(database, 'users'),
-                where('username', '==', username),
-                where('loginTokens', 'array-contains', token),
+                where('username', '==', authData.username),
+                where('loginTokens', 'array-contains', authData.token),
             );
 
             onSnapshot(userQuery, (snap) => {
                 if (snap.docs.length > 0) {
                     setUserData(snap.docs[0].data() as UserData);
+                    setStatus('SUCCESS');
                     setIsAuthed(true);
                 } else {
-                    setUserData(0);
+                    setStatus('FAILED');
                 }
-
-                setIsLoading(false);
             });
-        } else {
-            setIsLoading(false);
+        } else if (authData !== 'LOADING') {
+            setStatus('LOGIN');
         }
-    }, [username, token]);
+    }, [authData]);
 
     const updateUserData = (newUserData: UserData): Promise<boolean> => {
         return new Promise(async resolve => {
-            if (isAuthed && username && token) {
-                await updateDoc(doc(database, 'users', username), {
+            if (isAuthed && authData && authData !== 'LOADING' && authData.username && authData.token) {
+                await updateDoc(doc(database, 'users', authData.token), {
                     ...newUserData,
                 });
 
@@ -50,5 +53,5 @@ export default function useAuth(username: string|undefined, token: string|undefi
         });
     }
 
-    return [userData, updateUserData];
+    return [userData, updateUserData, status];
 }

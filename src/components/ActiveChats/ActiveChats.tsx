@@ -13,14 +13,13 @@ import ActiveChatsSkeleton from './ActiveChatsSkeleton';
 import ChatList from './ChatList';
 
 interface ActiveChatsProps {
-    username: string,
-    clearUsername: () => void,
+    clearAuthData: () => void,
     userData: UserData|undefined,
     updateUserData: (newUserData: UserData) => Promise<boolean>,
 }
 
 export default function ActiveChats(props: ActiveChatsProps) {
-    const { username, clearUsername, userData } = props;
+    const { clearAuthData, userData } = props;
     const service = new ActiveChatsService(userData as UserData);
 
     const [isButtonDisabled, setIsButtonDisabled] = useState<boolean>(true);
@@ -65,11 +64,10 @@ export default function ActiveChats(props: ActiveChatsProps) {
     }
 
     function logout() {
-        localStorage.removeItem('token');
-        clearUsername();
+        clearAuthData();
         window.location.reload();
     }
-
+    
     if (isLoading) return <ActiveChatsSkeleton/>;
     
     return (
@@ -80,13 +78,13 @@ export default function ActiveChats(props: ActiveChatsProps) {
                     <div className="account-info-big">
                         <UserCircleIcon className="account-icon"/>
                         <div>
-                            {username}
+                            {userData?.username}
                             <div className="account-info-expiration-container"><ClockIcon className="account-info-clock-icon"/>Expires in {timeUntil}</div>
                         </div>
                     </div>
                     <button className="logout-button" onClick={() => logout()}>Logout</button>
                 </div>
-                <ChatList activeChats={activeChats} username={username}/>
+                <ChatList activeChats={activeChats} username={userData?.username as string}/>
                 <form onSubmit={(e) => createNewChat(e)}>
                     <input placeholder="Username" className="full-width" ref={newChatRef} onChange={(el) => handleCreateChatTyping(el.target.value)}/>
                     <button disabled={isButtonDisabled}>Start Chatting</button>

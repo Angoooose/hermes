@@ -3,14 +3,14 @@ import { Dispatch, useState, useRef, FormEvent } from 'react';
 import { getDoc, doc, setDoc } from 'firebase/firestore';
 import { database } from '../../index';
 import generateToken from '../../utils/generateToken';
+import AuthData from '../../Types/AuthData';
 
 interface CreateAccountProps {
-    setUsername: Dispatch<string>,
-    setToken: Dispatch<string>,
+    setAuthData: Dispatch<AuthData>,
 }
 
 export default function CreateAccount(props: CreateAccountProps) {
-    const { setUsername, setToken } = props;
+    const { setAuthData } = props;
     
     const [isDisabled, setIsDisabled] = useState<boolean>(true);
     const [errorMessage, setErrorMessage] = useState<string>('');
@@ -29,14 +29,17 @@ export default function CreateAccount(props: CreateAccountProps) {
             if (!userDoc.exists()) {
                 if (pin === confirmPin) {
                     const newToken = generateToken();
-                    setToken(newToken);
-                    setUsername(username);
                     setDoc(doc(database, 'users', username), {
                         username,
                         pin,
                         loginTokens: [newToken],
                         expiresAt: new Date().getTime() + 1.728e+8,
                         chats: [],
+                    }).then(() => {
+                        setAuthData({
+                            username: username,
+                            token: newToken,
+                        });
                     });
                 } else {
                     setErrorMessage('Your pins do not match.');

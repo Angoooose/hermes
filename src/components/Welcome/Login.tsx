@@ -3,14 +3,14 @@ import { query, collection, updateDoc, doc, where, getDocs } from 'firebase/fire
 import { database } from '../../index';
 import generateToken from '../../utils/generateToken';
 import UserData from '../../Types/UserData';
+import AuthData from '../../Types/AuthData';
 
 interface LoginProps {
-    setUsername: Dispatch<string>,
-    setToken: Dispatch<string>,
+    setAuthData: Dispatch<AuthData>,
 }
 
 export default function Login(props: LoginProps) {
-    const { setUsername, setToken } = props;
+    const { setAuthData } = props;
 
     const [isDisabled, setIsDisabled] = useState<boolean>(true);
     const [errorMessage, setErrorMessage] = useState<string>('');
@@ -35,13 +35,16 @@ export default function Login(props: LoginProps) {
             if (userDocs.docs.length > 0) {
                 const userData = userDocs.docs[0].data() as UserData;
                 const newToken = generateToken();
+
                 let loginTokens = [...userData?.loginTokens];
                 loginTokens.push(newToken);
-                setToken(newToken);
-                setUsername(username);
-
                 updateDoc(doc(database, 'users', username), {
                     loginTokens,
+                }).then(() => {
+                    setAuthData({
+                        username: username,
+                        token: newToken,
+                    });
                 });
             } else {
                 setErrorMessage('Invalid username or pin.');
