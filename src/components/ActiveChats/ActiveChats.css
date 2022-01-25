@@ -49,10 +49,3 @@
 .logout-button {
     background-color: var(--primary-red);
 }
-
-.input-error {
-    color: var(--primary-red);
-    font-size: 12px;
-    margin: 5px 0 0 5px;
-    text-align: left;
-}

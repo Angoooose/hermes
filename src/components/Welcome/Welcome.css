@@ -25,23 +25,7 @@
     width: fit-content;
 }
 
-.welcome-input {
-    margin: 5px 0;
-    width: 100%;
-}
-
 .welcome-button {
     margin: 10px 0 0 0;
-    width: 100%;
-}
-
-.error-box {
-    background-color: var(--secondary-red);
-    border-left: 3px solid var(--primary-red);
-    border-radius: var(--border-radius);
-    color: var(--primary-red);
-    font-size: 13px;
-    margin-bottom: 5px;
-    padding: 10px;
     width: 100%;
 }

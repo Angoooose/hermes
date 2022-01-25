@@ -12,6 +12,7 @@ import ActiveChatsService from '../../services/ActiveChatsService';
 import ActiveChatsSkeleton from './ActiveChatsSkeleton';
 import ChatList from './ChatList';
 import Button from '../common/Button/Button';
+import Input from '../common/Input/Input';
 
 interface ActiveChatsProps {
     clearAuthData: () => void,
@@ -87,7 +88,12 @@ export default function ActiveChats(props: ActiveChatsProps) {
                 </div>
                 <ChatList activeChats={activeChats} username={userData?.username as string}/>
                 <form onSubmit={(e) => createNewChat(e)}>
-                    <input placeholder="Username" className="full-width" ref={newChatRef} onChange={(el) => handleCreateChatTyping(el.target.value)}/>
+                    <Input
+                        placeholder="Username"
+                        className="full-width"
+                        ref={newChatRef}
+                        onChange={(el) => handleCreateChatTyping(el.target.value)}
+                    />
                     <Button text="Start Chatting" disabled={isButtonDisabled}></Button>
                 </form>
                 {isNewChatError && <div className="input-error">Please enter a valid username.</div>}

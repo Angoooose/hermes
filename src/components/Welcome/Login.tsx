@@ -1,10 +1,11 @@
-import { Dispatch, useState, useRef, FormEvent } from 'react';
+import { Dispatch, useState, useRef, FormEvent, KeyboardEvent } from 'react';
 import { query, collection, updateDoc, doc, where, getDocs } from 'firebase/firestore';
 import { database } from '../../index';
 import generateToken from '../../utils/generateToken';
 import UserData from '../../Types/UserData';
 import AuthData from '../../Types/AuthData';
 import Button from '../common/Button/Button';
+import Input from '../common/Input/Input';
 
 interface LoginProps {
     setAuthData: Dispatch<AuthData>,
@@ -56,15 +57,34 @@ export default function Login(props: LoginProps) {
         }
     }
 
+    function handleKeyPress(e: KeyboardEvent<HTMLInputElement>) {
+        if (e.key === 'Enter') {
+            pinRef.current?.focus();
+        }
+    }
+
     return (
         <div className="welcome-container">
             <h1>Login</h1>
             <form className="welcome-form" onSubmit={(e) => login(e)}>
-                {errorMessage !== '' && <div className="error-box">{errorMessage}</div>}
-                <input className="welcome-input" placeholder="Username" ref={usernameRef} onChange={(el) => setIsDisabled(el.target.value === '' || pinRef.current!.value === '')}/>
-                <input className="welcome-input" placeholder="Pin" type="password" ref={pinRef} onChange={(el) => setIsDisabled(el.target.value === '' || usernameRef.current!.value === '')}/>
+                <Input
+                    className="full-width"
+                    placeholder="Username"
+                    ref={usernameRef}
+                    onChange={(el) => setIsDisabled(el.target.value === '' || pinRef.current!.value === '')}
+                    onKeyDown={(e) => handleKeyPress(e)}
+                />
+                <Input
+                    className="full-width"
+                    placeholder="Pin"
+                    type="password"
+                    ref={pinRef}
+                    onChange={(el) => setIsDisabled(el.target.value === '' || usernameRef.current!.value === '')}
+                    errorMessage={errorMessage}
+                    setErrorMessage={setErrorMessage}
+                />
                 <Button text="Login" className="welcome-button" isLoading={isLoading} disabled={isDisabled || isLoading}></Button>
             </form>
         </div>
-    )
+    );
 }

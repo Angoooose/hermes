@@ -38,22 +38,6 @@ body {
     font-family: var(--font);
 }
 
-input {
-    background-color: var(--bg-secondary);
-    border: none;
-    border-bottom: 2px solid var(--bg-secondary);
-    border-radius: var(--border-radius);
-    color: var(--text);
-    font-family: var(--font);
-    outline: none;
-    padding: 10px 10px 8px 10px;
-    transition: 0.5s;
-}
-
-input:focus, input:hover {
-    border-bottom: 2px solid var(--primary-blue);
-}
-
 form {
     display: flex;
     flex-direction: row;

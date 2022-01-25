@@ -1,0 +1,37 @@
+.input-parent {
+    margin: 5px 0;
+    width: 100%;
+    padding-right: 20px;
+}
+
+input {
+    background-color: var(--bg-secondary);
+    border: none;
+    border-bottom: 2px solid var(--bg-secondary);
+    border-radius: var(--border-radius);
+    color: var(--text);
+    font-family: var(--font);
+    outline: none;
+    padding: 10px 10px 8px 10px;
+    transition: 0.5s;
+}
+
+input:focus, input:hover {
+    border-bottom: 2px solid var(--primary-blue);
+}
+
+.input-error {
+    color: var(--primary-red);
+    display: flex;
+    align-items: center;
+    font-size: 12px;
+    font-weight: 300;
+    margin: 3px 0 0 3px;
+    text-align: left;
+}
+
+.input-error-icon {
+    height: 18px;
+    margin-right: 4px;
+    width: 18px;
+}
