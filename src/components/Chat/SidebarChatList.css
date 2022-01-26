@@ -1,0 +1,47 @@
+.sidebar-chat {
+    border-bottom: 1.5px solid var(--bg-tertiary);
+    cursor: pointer;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px;
+    transition: 0.3s;
+}
+
+.sidebar-chat:hover {
+    background-color: rgba(40, 45, 66, 0.4);
+}
+
+.sidebar-chat-icon {
+    color: var(--text-gray);
+    height: 55px;
+    margin-right: 10px;
+    width: auto;
+}
+
+.sidebar-chat-name {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+.sidebar-last-msg {
+    background-color: var(--bg-tertiary);
+    border-radius: var(--msg-right-border-radius);
+    font-size: 14px;
+    font-weight: 300;
+    max-width: 175px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: var(--msg-padding);
+    width: fit-content;
+    white-space: nowrap;
+}
+
+.sidebar-chat-check-icon {
+    color: var(--primary-green);
+    height: 18px;
+    margin-right: 5px;
+    width: 18px;
+}

@@ -1,5 +1,11 @@
+.chat-flex {
+    display: flex;
+}
+
 .chat-container {
     padding: 25px;
+    transition: 0.8s ease;
+    width: 100%;
 }
 
 .chat-header {

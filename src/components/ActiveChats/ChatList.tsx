@@ -32,6 +32,6 @@ export default function ChatList(props: ChatListProps) {
             </div>
         );
     } else {
-        return <div className="no-chats">Looks like you haven't messaged anybody yet...</div>
+        return <div className="empty-error">Looks like you haven't messaged anybody yet...</div>
     }
 }

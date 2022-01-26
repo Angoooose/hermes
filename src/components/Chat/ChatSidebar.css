@@ -1,0 +1,50 @@
+.chat-sidebar-container {
+    display: flex;
+    transition: 0.8s ease;
+}
+
+.chat-sidebar {
+    background-color: var(--bg-secondary);
+    box-shadow: var(--box-shadow);
+    height: 100%;
+    padding: 15px 10px;
+    width: 350px;
+    z-index: 0;
+    height: calc(100% - 10px);
+}
+
+.sidebar-header {
+    border-bottom: 1.5px solid var(--bg-tertiary);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-weight: 700;
+    font-size: 25px;
+    text-align: center;
+    padding-bottom: 5px;
+}
+
+.sidebar-icon {
+    border-radius: 50%;
+    color: var(--text-gray);
+    cursor: pointer;
+    height: 30px;
+    padding: 5px;
+    transition: 0.3s;
+    width: auto;
+}
+
+.sidebar-icon:hover {
+    background-color: rgba(40, 45, 66, 0.5);
+}
+
+.sidebar-expand-button {
+    background-color: var(--bg-secondary);
+    border-top-right-radius: var(--border-radius);
+    border-bottom-right-radius: var(--border-radius);
+    display: flex;
+    height: fit-content;
+    transition: 0.4s ease;
+    padding: 10px;
+    z-index: -1;
+}

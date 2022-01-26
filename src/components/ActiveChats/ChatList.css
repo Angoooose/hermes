@@ -1,8 +1,3 @@
-.no-chats {
-    color: var(--text-gray);
-    padding: 25px 0;
-}
-
 .active-chat-cards-container {
     padding: 20px 0;
 }
@@ -36,8 +31,11 @@
     float: right;
     margin-top: 5px;
     max-width: 400px;
+    overflow: hidden;
     padding: 6px 10px;
+    text-overflow: ellipsis;
     width: fit-content;
+    white-space: nowrap;
 }
 
 .active-chat-last-msg-sent {

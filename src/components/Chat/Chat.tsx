@@ -5,6 +5,7 @@ import { UserCircleIcon, AtSymbolIcon } from '@heroicons/react/outline';
 import { useParams } from 'react-router-dom';
 import ChatService from '../../services/ChatService';
 
+import ChatSidebar from './ChatSidebar';
 import Messages from './Messages';
 import Button from '../common/Button/Button';
 
@@ -21,6 +22,7 @@ export default function Chat(props: ChatProps) {
     const { userData, authStatus } = props;
     const { chatId } = useParams();
 
+    const [containerLeftMargin, setContainerLeftMargin] = useState<number>(-45);
     const [isSendDisabled, setIsSendDisabled] = useState<boolean>(true);
     const [messages, setMessages] = useState<Message[]>([]);
     const [chatName, setChatName] = useState<string>('');
@@ -88,25 +90,28 @@ export default function Chat(props: ChatProps) {
     );
 
     return (
-        <div className="chat-container">
-            <div className="chat-header">
-                <div>
-                    <div className="gray">Chatting with:</div>
-                    <div className="chat-header-big"><AtSymbolIcon className="chat-at-icon"/>{chatName}</div>
+        <div className="chat-flex">
+            <ChatSidebar userData={userData} setContainerLeftMargin={setContainerLeftMargin}/>
+            <div className="chat-container" style={{ marginLeft: containerLeftMargin }}>
+                <div className="chat-header">
+                    <div>
+                        <div className="gray">Chatting with:</div>
+                        <div className="chat-header-big"><AtSymbolIcon className="chat-at-icon"/>{chatName}</div>
+                    </div>
+                    <div className="chat-header-right">
+                        <div className="gray">Signed in as:</div>
+                        <a className="chat-header-big" href="/"><UserCircleIcon className="chat-account-icon"/>{userData?.username}</a>
+                    </div>
                 </div>
-                <div className="chat-header-right">
-                    <div className="gray">Signed in as:</div>
-                    <a className="chat-header-big" href="/"><UserCircleIcon className="chat-account-icon"/>{userData?.username}</a>
+                <div className="messages-container">
+                    <Messages messages={messages} isLoading={isLoading} username={userData?.username as string}/>
+                    <div ref={lastMessageRef}/>
                 </div>
+                <form onSubmit={(e) => sendMessage(e)} ref={formRef}>
+                    <input placeholder={`Send a message to @${chatName}`} className="full-width" ref={chatRef} onChange={(el) => setIsSendDisabled(el.target.value === '')}/>
+                    <Button text="Send" disabled={isSendDisabled || authStatus === 'LOADING'}></Button>
+                </form>
             </div>
-            <div className="messages-container">
-                <Messages messages={messages} isLoading={isLoading} username={userData?.username as string}/>
-                <div ref={lastMessageRef}/>
-            </div>
-            <form onSubmit={(e) => sendMessage(e)} ref={formRef}>
-                <input placeholder={`Send a message to @${chatName}`} className="full-width" ref={chatRef} onChange={(el) => setIsSendDisabled(el.target.value === '')}/>
-                <Button text="Send" disabled={isSendDisabled || authStatus === 'LOADING'}></Button>
-            </form>
         </div>
     );
 }
