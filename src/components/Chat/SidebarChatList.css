@@ -1,5 +1,5 @@
 .sidebar-chat {
-    border-bottom: 1.5px solid var(--bg-tertiary);
+    border-bottom: 1.5px solid var(--bg-100);
     cursor: pointer;
     display: flex;
     flex-direction: row;
@@ -10,7 +10,7 @@
 }
 
 .sidebar-chat:hover {
-    background-color: rgba(40, 45, 66, 0.4);
+    background-color: var(--bg-op-100);
 }
 
 .sidebar-chat-icon {
@@ -27,7 +27,7 @@
 }
 
 .sidebar-last-msg {
-    background-color: var(--bg-tertiary);
+    background-color: var(--bg-100);
     border-radius: var(--msg-right-border-radius);
     font-size: 14px;
     font-weight: 300;
@@ -40,7 +40,7 @@
 }
 
 .sidebar-chat-check-icon {
-    color: var(--primary-green);
+    color: var(--green);
     height: 18px;
     margin-right: 5px;
     width: 18px;

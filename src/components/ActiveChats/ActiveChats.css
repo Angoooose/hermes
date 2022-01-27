@@ -7,7 +7,7 @@
 
 .account-info {
     align-items: center;
-    background-color: var(--bg-secondary);
+    background-color: var(--bg-300);
     border-radius: var(--border-radius);
     display: flex;
     flex-direction: row;
@@ -25,7 +25,7 @@
 }
 
 .account-icon {
-    color: var(--primary-blue);
+    color: var(--blue);
     margin-right: 8px;
     width: 60px;
 }
@@ -47,5 +47,5 @@
 }
 
 .logout-button {
-    background-color: var(--primary-red);
+    background-color: var(--red);
 }

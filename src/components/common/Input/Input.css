@@ -5,9 +5,9 @@
 }
 
 input {
-    background-color: var(--bg-secondary);
+    background-color: var(--bg-300);
     border: none;
-    border-bottom: 2px solid var(--bg-secondary);
+    border-bottom: 2px solid var(--bg-300);
     border-radius: var(--border-radius);
     color: var(--text);
     font-family: var(--font);
@@ -17,11 +17,11 @@ input {
 }
 
 input:focus, input:hover {
-    border-bottom: 2px solid var(--primary-blue);
+    border-bottom: 2px solid var(--blue);
 }
 
 .input-error {
-    color: var(--primary-red);
+    color: var(--red);
     display: flex;
     align-items: center;
     font-size: 12px;

@@ -9,7 +9,7 @@
 }
 
 .chat-header {
-    background-color: var(--bg-secondary);
+    background-color: var(--bg-300);
     border-radius: var(--border-radius);
     display: flex;
     flex-direction: row;
@@ -38,7 +38,7 @@
 }
 
 .chat-account-icon {
-    color: var(--primary-blue);
+    color: var(--blue);
     margin-right: 5px;
     width: 50px;
 }

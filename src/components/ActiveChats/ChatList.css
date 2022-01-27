@@ -4,7 +4,7 @@
 
 .active-chat-card {
     align-items: center;
-    background-color: var(--bg-secondary);
+    background-color: var(--bg-300);
     border-radius: var(--border-radius);
     display: flex;
     flex-direction: row;
@@ -24,7 +24,7 @@
 }
 
 .active-chat-last-msg {
-    background-color: var(--bg-tertiary);
+    background-color: var(--bg-100);
     border-radius: var(--msg-right-border-radius);
     font-size: 16px;
     font-weight: 300;
@@ -39,7 +39,7 @@
 }
 
 .active-chat-last-msg-sent {
-    background-color: var(--primary-blue);
+    background-color: var(--blue);
 }
 
 .active-chat-timestamp {

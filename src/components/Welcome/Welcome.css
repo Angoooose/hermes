@@ -17,7 +17,7 @@
 }
 
 .welcome-container {
-    background-color: var(--bg-tertiary);
+    background-color: var(--bg-100);
     box-shadow: var(--box-shadow);
     border-radius: var(--border-radius);
     margin: 25px;

@@ -3,7 +3,7 @@
 }
 
 header {
-    background-color: var(--bg-dark);
+    background-color: var(--bg-400);
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
     padding: 8px 10px;
     display: flex;
@@ -43,5 +43,5 @@ header {
 }
 
 .github-img:hover {
-    background-color: var(--bg-primary);
+    background-color: var(--bg-200);
 }

@@ -1,14 +1,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Merriweather+Sans:wght@300;400;500;700&display=swap');
 
 :root {
-    --bg-dark: #121521;
-    --bg-primary: #212540;
-    --bg-secondary: #171a29;
-    --bg-tertiary: #282d42;
-    --primary-blue: #1d9bf5;
-    --primary-green: #36e06c;
-    --primary-red: #f52043;
-    --secondary-red: rgba(245, 32, 67, 0.3);
+    --bg-400: #121521;
+    --bg-300: #171a29;
+    --bg-200: #212540;
+    --bg-100: #282d42;
+    --bg-op-100: rgba(40, 45, 66, 0.4);
+    --blue: #1d9bf5;
+    --green: #36e06c;
+    --red: #f52043;
     --border-radius: 5px;
     --msg-padding: 6px 10px;
     --msg-left-border-radius: 12px 12px 12px 0;
@@ -24,7 +24,7 @@
 }
 
 ::-webkit-scrollbar-thumb {
-    background: var(--bg-secondary);
+    background: var(--bg-300);
     border-radius: 15px;
     cursor: pointer;
     transition: 0.3s;
@@ -35,7 +35,7 @@ html, body, #root, .app {
 }
 
 body {
-    background-color: var(--bg-primary);
+    background-color: var(--bg-200);
     color: var(--text);
     font-family: var(--font);
 }
@@ -79,7 +79,7 @@ a {
 }
 
 .blue-link {
-    color: var(--primary-blue);
+    color: var(--blue);
 }
 
 .blue-link:hover {
@@ -87,5 +87,5 @@ a {
 }
 
 .message-sent {
-    background-color: var(--primary-blue) !important;
+    background-color: var(--blue) !important;
 }

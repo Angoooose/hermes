@@ -29,12 +29,12 @@
 }
 
 .message-received {
-    background-color: var(--bg-secondary);
+    background-color: var(--bg-300);
     border-radius: var(--msg-left-border-radius);
 }
 
 .message-sent {
-    background-color: var(--primary-blue);
+    background-color: var(--blue);
     border-radius: var(--msg-right-border-radius);
     margin-left: auto;
 }

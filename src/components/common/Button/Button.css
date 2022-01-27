@@ -1,5 +1,5 @@
 button {
-    background-color: var(--primary-blue);
+    background-color: var(--blue);
     border: none;
     border-radius: var(--border-radius);
     color: var(--text);
@@ -22,5 +22,5 @@ button:disabled {
 }
 
 .red-button {
-    background-color: var(--primary-red);
+    background-color: var(--red);
 }

@@ -4,7 +4,7 @@
 }
 
 .chat-sidebar {
-    background-color: var(--bg-secondary);
+    background-color: var(--bg-300);
     box-shadow: var(--box-shadow);
     height: 100%;
     padding: 15px 10px;
@@ -14,7 +14,7 @@
 }
 
 .sidebar-header {
-    border-bottom: 1.5px solid var(--bg-tertiary);
+    border-bottom: 1.5px solid var(--bg-100);
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -39,7 +39,7 @@
 }
 
 .sidebar-expand-button {
-    background-color: var(--bg-secondary);
+    background-color: var(--bg-300);
     border-top-right-radius: var(--border-radius);
     border-bottom-right-radius: var(--border-radius);
     display: flex;
