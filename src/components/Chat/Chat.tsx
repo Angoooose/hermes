@@ -51,7 +51,7 @@ export default function Chat(props: ChatProps) {
                 setIsFailed(true);
             }
         }
-    }, [userData, authStatus]);
+    }, [userData, authStatus, chatId]);
 
     useEffect(() => {
         lastMessageRef.current?.scrollIntoView({ behavior: 'smooth' });

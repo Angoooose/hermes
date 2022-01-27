@@ -5,6 +5,7 @@ import UserData, { UserChatField } from '../../Types/UserData';
 import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
 import { CheckCircleIcon } from '@heroicons/react/solid';
 import { useParams } from 'react-router';
+import { Link } from 'react-router-dom';
 
 interface SidebarChatListProps {
     userData: UserData|undefined,
@@ -40,13 +41,13 @@ export default function SidebarChatList({ userData }: SidebarChatListProps) {
             <div className="sidebar-chats-container">
                 {chats.filter(c => c.lastMessage).map(chat => {
                     return (
-                        <a className="sidebar-chat" href={`/chat/${chat.id}`}>
+                        <Link className="sidebar-chat" to={`/chat/${chat.id}`}>
                             <div className="flex-row align-center">
                                 <CheckCircleIcon className="sidebar-chat-check-icon" display={chat.id === chatId ? 'block' : 'none'}/>
                                 <div className="sidebar-chat-name"><span className="gray">@</span> {chat.name}</div>
                             </div>
                             <div className={`sidebar-last-msg ${chat.lastMessage?.author === userData?.username ? 'message-sent' : ''}`}>{chat.lastMessage?.content}</div>
-                        </a>
+                        </Link>
                     );
                 })}
             </div>

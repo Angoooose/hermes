@@ -1,5 +1,6 @@
 import './ChatList.css';
 
+import { Link } from 'react-router-dom';
 import { UserChatField } from '../../Types/UserData';
 import getMessageTimestamp from '../../utils/getMessageTimestamp';
 
@@ -17,7 +18,7 @@ export default function ChatList(props: ChatListProps) {
             <div>
                 {filteredChats.map(chat => {
                     return (
-                        <a className="active-chat-card" href={`/chat/${chat.id}`}>
+                        <Link className="active-chat-card" to={`/chat/${chat.id}`}>
                             <div className="active-chat-name"><span className="gray">@</span> {chat.name}</div>
                             <div className="active-chat-right">
                                 {chat.lastMessage ?
@@ -26,7 +27,7 @@ export default function ChatList(props: ChatListProps) {
                                         <div className={`active-chat-last-msg ${chat.lastMessage.author === username ? 'active-chat-last-msg-sent' : ''}`}>{chat.lastMessage.content}</div>
                                     </div> : <div className="gray">No messages sent</div>}
                             </div>
-                        </a>
+                        </Link>
                     );
                 })}
             </div>
