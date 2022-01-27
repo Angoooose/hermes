@@ -12,6 +12,12 @@
     margin: 15px 0;
     padding: 15px;
     text-align: left;
+    transition: 0.5s;
+}
+
+.active-chat-card:hover {
+    margin-left: 10px;
+    margin-right: -10px;
 }
 
 .active-chat-name {
