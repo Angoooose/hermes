@@ -1,5 +1,5 @@
 .active-chats-container {
-    padding: 50px 20px 0 20px;
+    padding: 20px;
     max-width: 600px;
     margin: auto;
     text-align: center;
@@ -48,4 +48,8 @@
 
 .logout-button {
     background-color: var(--red);
+}
+
+.new-chat-form {
+    margin: 10px 0;
 }

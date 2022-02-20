@@ -15,7 +15,6 @@ export default function ActiveChatsSkeleton() {
 
     return (
         <div className="active-chats-container">
-            <h1>Your active chats</h1>
             <div className="active-chat-cards-container">
                 <SkeletonTheme baseColor="#282d42" highlightColor="#464f74" >
                     <div className="account-info">
