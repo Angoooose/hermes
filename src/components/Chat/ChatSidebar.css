@@ -48,3 +48,13 @@
     padding: 10px;
     z-index: -1;
 }
+
+@media screen and (max-width: 850px) {
+    .chat-sidebar-container {
+        display: none;
+    }
+
+    .chat-container {
+        margin-left: 0 !important;
+    }
+}

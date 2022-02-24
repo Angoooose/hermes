@@ -35,8 +35,8 @@ export default function SidebarChatList({ userData }: SidebarChatListProps) {
             })}
         </SkeletonTheme>
     );
-
-    if (chats.length > 0) { 
+    
+    if (chats[0].lastMessage) {
         return (
             <div className="sidebar-chats-container">
                 {chats.filter(c => c.lastMessage).map(chat => {
