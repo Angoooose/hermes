@@ -74,30 +74,28 @@ export default function ActiveChats(props: ActiveChatsProps) {
     
     return (
         <div className="active-chats-container">
-            <div className="active-chat-cards-container">
-                <div className="account-info">
-                    <div className="account-info-big">
-                        <UserCircleIcon className="account-icon"/>
-                        <div>
-                            {userData?.username}
-                            <div className="account-info-expiration-container"><ClockIcon className="account-info-clock-icon"/>Expires in {timeUntil}</div>
-                        </div>
+            <div className="account-info">
+                <div className="account-info-big">
+                    <UserCircleIcon className="account-icon"/>
+                    <div>
+                        {userData?.username}
+                        <div className="account-info-expiration-container"><ClockIcon className="account-info-clock-icon"/>Expires in {timeUntil}</div>
                     </div>
-                    <Button text="Logout" isRed={true} onClick={() => logout()}></Button>
                 </div>
-                <ChatList activeChats={activeChats} username={userData?.username as string}/>
-                <div className={activeChats.length === 0 ? 'new-chat-form' : ''}>
-                    <form onSubmit={(e) => createNewChat(e)}>
-                        <Input
-                            placeholder="Username"
-                            className="full-width"
-                            ref={newChatRef}
-                            onChange={(el) => handleCreateChatTyping(el.target.value)}
-                        />
-                        <Button text="Start Chatting" disabled={isButtonDisabled}></Button>
-                    </form>
-                    {isNewChatError && <div className="input-error">Please enter a valid username.</div>}
-                </div>
+                <Button text="Logout" isRed={true} onClick={() => logout()}></Button>
+            </div>
+            <ChatList activeChats={activeChats} username={userData?.username as string}/>
+            <div className="new-chat-container">
+                <form onSubmit={(e) => createNewChat(e)}>
+                    <Input
+                        placeholder="Username"
+                        className="full-width"
+                        ref={newChatRef}
+                        onChange={(el) => handleCreateChatTyping(el.target.value)}
+                    />
+                    <Button text="Start Chatting" disabled={isButtonDisabled}></Button>
+                </form>
+                {isNewChatError && <div className="input-error">Please enter a valid username.</div>}
             </div>
         </div>
     );
