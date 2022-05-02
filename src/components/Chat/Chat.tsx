@@ -108,7 +108,7 @@ export default function Chat(props: ChatProps) {
                     <div ref={lastMessageRef}/>
                 </div>
                 <form onSubmit={(e) => sendMessage(e)} ref={formRef}>
-                    <input placeholder={`Send a message to @${chatName}`} className="full-width" ref={chatRef} onChange={(el) => setIsSendDisabled(el.target.value === '')}/>
+                    <input placeholder={`Send a message to @${chatName}`} className="full-width" ref={chatRef} onChange={(el) => setIsSendDisabled(el.target.value === '' || el.target.value.replace(/\s/g, '').length === 0)}/>
                     <Button text="Send" disabled={isSendDisabled || authStatus === 'LOADING'}></Button>
                 </form>
             </div>
